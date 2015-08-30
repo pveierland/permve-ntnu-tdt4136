@@ -10,13 +10,12 @@
 
 \author{Per Magnus Veierland\\permve@stud.ntnu.no}
 
-\date{\normalsize\today} % Today's date or a custom date
+\date{\normalsize\today}
 
 \begin{document}
 \maketitle
 
 \section*{Theoretical Questions}
-
 
 \begin{enumerate}
 \item \textbf{What is the Turing Test, and how is it conducted?}
@@ -27,13 +26,15 @@ No specific time limit was set for the experiment, but Turing estimated that a m
 
 \item \textbf{What is the relationship between thinking rationally and acting rationally? Is rational thinking an absolute condition for acting rationally?}
 
+Rational thinking is not an absolute condition for acting rationally. Since the rationality of actions is evaluated outside an agent, the agent might think irrationality and even act randomly, but as long as the agent's actions end up satisfying an external performance measure the agent can be said to act rationally.
+
 \item \textbf{What is Tarski's ``theory of reference'' about?}
 
 Alfred Tarski's ``theory of reference'' shows how to relate the objects in a logic to objects in the real world.
 
 \item \textbf{Describe rationality. How is it defined?}
 
-Rationality is defined as ``doing the right thing'' given the available information. Rationality describes the ability to base reasoning on logical inferences from available information and to act consistent with the available information to achieve goals established through reasoning. Within artificial intelligence a \textit{rational agent} will model the available information such that it can always perform the action available with the optimal expected outcome according to its goals. The goals of a rational agent will normally be modelled by utility functions which are used to calculate the expected outcome of different actions. Due to complexity it will often be impossible to always perform actions with optimal expected outcome, so in practise the term \textit{limited rationality} is used to describe acting appropriately when there is insufficient time to calculate the optimal answer.
+Rationality is defined as ``doing the right thing'' given the available information. Rationality describes the ability to base reasoning on logical inferences from available information and to act consistent with the available information to achieve goals established through reasoning. Within artificial intelligence a \textit{rational agent} will model the available information such that it can always perform the action available with the optimal expected outcome according to its goals. The goals of a rational agent will normally be modeled by utility functions which are used to calculate the expected outcome of different actions. Due to complexity it will often be impossible to always perform actions with optimal expected outcome, so in practice the term \textit{limited rationality} is used to describe acting appropriately when there is insufficient time to calculate the optimal answer.
 
 \item \textbf{Consider a robot whose task it is to cross the road. Its action portfolio looks like this: look-back, look-forward, look-left-look-right, go-forward, go-back, go-left and go-right.}
 
@@ -136,7 +137,7 @@ Simple reflex agents do not have state and only consider current percepts when d
 
 High degrees or full visibility is often necessary to avoid getting stuck in infinite loops which can otherwise be hard for simple reflex agents to escape. One technique to break out of loops is to introduce some randomness in decisions.
 
-The possibility for small implementations and not requiring memory makes simple reflex agents attractive when building very low-cost systems, especially in swarm configurations where more advanced group behavior can be construed from simple agent behaviors. Simple refled agents can also be attractive in scenarios where very quick responses are required and more advanced deliberation will consume too much time.
+The possibility for small implementations and not requiring memory makes simple reflex agents attractive when building low-cost systems, especially in swarm configurations where more advanced group behavior can be construed from simple agent behaviors. Simple reflex agents can also be attractive in scenarios where quick responses are required and more advanced deliberation will consume too much time.
 
 \item \textbf{Model-based reflex agents}
 
@@ -144,7 +145,11 @@ State combined with a model describing how the current state will be transformed
 
 \item \textbf{Goal-based agents}
 
-\item \textbf{Utility-based agents}
+Goal-based agents are incorporated with a notion of ``desirable world states'' which the agent seeks to achieve. Having goals stated more explicitly and separate from being encoded into base behaviors is an advantage since it helps make the goals more transparent and easier to update. Goal-based agents often need some ability to plan or search for ways to apply its actions to achieve its desired world state(s), since most goals will not be achievable through a direct mapping between current percepts and actions.
+
+\item \textbf{Utility-based agents} 
+
+Utility provides a mechanism to quantify the desirability of outcomes. Instead of designing the behaviors of an agent to align with an external performance measure, or pursue purely binary goals; a sensible utility function can be built into an agent enabling it to perform well in more complex situations. When an agent must decide between conflicting goals and a trade-off must be found, or if the agent must decide between goals which involve uncertainties; a utility function provides a quantified mechanism to find the highest achievable expected utility from the available actions.
 
 \end{enumerate}
 
