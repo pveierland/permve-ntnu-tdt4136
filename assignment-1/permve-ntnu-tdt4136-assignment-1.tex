@@ -12,6 +12,22 @@
 
 \date{\normalsize\today}
 
+% http://www.logicmatters.net/latex-for-logicians/symbols/corner-quotes-for-godel-numbers/
+\newbox\gnBoxA
+\newdimen\gnCornerHgt
+\setbox\gnBoxA=\hbox{$\ulcorner$}
+\global\gnCornerHgt=\ht\gnBoxA
+\newdimen\gnArgHgt
+\def\Quinequote #1{%
+    \setbox\gnBoxA=\hbox{$#1$}%
+    \gnArgHgt=\ht\gnBoxA%
+    \ifnum     \gnArgHgt<\gnCornerHgt \gnArgHgt=0pt%
+    \else \advance \gnArgHgt by -\gnCornerHgt%
+    \fi \raise\gnArgHgt\hbox{$\ulcorner$} \box\gnBoxA %
+    \raise\gnArgHgt\hbox{$\urcorner$}}
+
+\def\eenskip{\hskip.2em\relax}
+
 \begin{document}
 \maketitle
 
@@ -20,21 +36,65 @@
 \begin{enumerate}
 \item \textbf{What is the Turing Test, and how is it conducted?}
 
-The Turing Test, originally introduced as ``The Imitation Game'' by Alan~M.~Turing in his paper ``Computing Machinery and Intelligence'' from 1950, describes a experiment intended to answer the question of whether machines can think. In the experiment, a machine (\textbf{A}) and a human (\textbf{B}) communicates purely textually with a human interrogator (\textbf{C}). Through conversation with both participants, the goal of the interrogator is to discern which participant is human, and which is the machine. The objective of the human participant (\textbf{B}) is to help the interrogator conclude that it really is \textbf{B} that is human, while the machine participant is free to choose whichever strategy to convince the interrogator that it is the human.
+The Turing Test, originally introduced as ``The Imitation Game'' by Alan~M.~Turing in his paper ``Computing Machinery and Intelligence'' from 1950, describes an experiment intended to answer the question of whether machines can think. In the experiment, a machine; \textbf{A}, and a human; \textbf{B}, communicates textually with a human interrogator; \textbf{C}) Through conversation with both participants, the goal of the interrogator is to discern which participant is human, and which is the machine. The objective of the human participant is to help the interrogator conclude that it really is \textbf{B} that is human, while the machine participant is free to choose whichever strategy to convince the interrogator that \textbf{A} is the human.
 
-No specific time limit was set for the experiment, but Turing estimated that a machine would by the year 2000 be able to play the game sufficiently well such that an average interrogator would not have more than a 70\% chance of correctly identifying the human participant after 5 minutes of playing. Turing did not describe a machine succeeding in the game as ``passing a test'', but described the experiment as a hypothetical and practical exercise to show that even if a machine might operate differently from a human, it can still be capable of thinking.
+No time limit was set for the experiment, but Turing estimated that a machine would by the year 2000 be able to play the game sufficiently well such that an average interrogator would not have more than a 70\% chance of correctly identifying the human participant after 5 minutes of playing. Turing did not describe a machine succeeding in the game as ``passing a test'', but described the experiment as a hypothetical and practical exercise to show that even if a machine might operate differently from a human, it can still be capable of thinking.
 
 \item \textbf{What is the relationship between thinking rationally and acting rationally? Is rational thinking an absolute condition for acting rationally?}
 
-Rational thinking is not an absolute condition for acting rationally. Since the rationality of actions is evaluated outside an agent, the agent might think irrationality and even act randomly, but as long as the agent's actions end up satisfying an external performance measure the agent can be said to act rationally.
+Rational thinking is about making ``correct'' inferences based on existing knowledge. This can be done either in strict formal logic or with systems built to deal with uncertainty. Acting rationally is about making the actions which is expected to lead to the best outcome. Rational thought can help an agent act rationally but is not required to act rationally. Reflex reactions in a robot system which do not involve deliberation can still be rational if they accomplish the right action.
 
 \item \textbf{What is Tarski's ``theory of reference'' about?}
 
-Alfred Tarski's ``theory of reference'' shows how to relate the objects in a logic to objects in the real world.
+Alfred Tarski's ``theory of reference'' shows how to relate the objects in a logic to objects in the real world. Problems such as ``the liar's paradox'' are possible in a closed language such as English because the expression ``this sentence is false'' is able to implicitly reference itself. If the reference is considered internal to the expression the expression leads to an infinite recursion:
+
+\begin{tabular}{rl}
+& \texttt{~~this sentence is false}\\
+$\Rightarrow$ & \texttt{~(this sentence is false) is false}\\
+$\Rightarrow$ & \texttt{((this sentence is false) is false) is false}\\
+$\Rightarrow$ & \texttt{\ldots}\\
+\end{tabular}
+
+To avoid such contradictions of self-reference Tarski suggested using levels of languages, where only sentences in a higher level ``meta-language'' can make statements about the truth of sentences made in a lower level ``object language''. Tarski's theory applied only to formal languages with fully interpreted sentences. It also required that the ``meta-language'' must contain the ``object language'' such that any statement which can be made in the ``object language'' can also be made in the ``meta-language''.
+
+Tarski defined his \textit{material adequacy condition}, also know as \textit{Convention T}, which requires that any adequate theory of truth for a language \textbf{L} must imply that the following holds for any sentence $\varphi$ of \textbf{L}:
+
+\begin{itemize}
+\item $\Quinequote{\varphi} \text{~is true if and only if~} \varphi$ is true.
+\end{itemize}
+
+The notation uses marks to indicate that the text within is part of the ``object language'' and the text outside is part of the ``meta-language''.
+
+Since the language \textbf{L} is fully interpreted it can be assumed that any sentence $\varphi$ has a truth value. Tarski further shows that the truth of sentences can be established recursively. Given that the language \textbf{L} contains two sentences $\varphi$ and $\psi$ and the sentential connectives $\land$, $\lor$ and $\neg$, the following clauses hold:
+
+\begin{enumerate}
+\item $\Quinequote{\varphi \lor \psi} \text{~is true if and only if~} \Quinequote{\varphi} \text{~is true or~} \Quinequote{\psi} \text{~is true.}$
+\item $\Quinequote{\varphi \land \psi} \text{~is true if and only if~} \Quinequote{\varphi} \text{~is true and ~} \Quinequote{\psi} \text{~is true.}$
+\item $\Quinequote{\neg\varphi} \text{~is true if and only if~} \Quinequote{\varphi} \text{~is false.}$
+\end{enumerate}
+
+Further, the truth of each atomic sentence can be defined in terms of \textit{reference} and \textit{satisfation}. If the language \textbf{L} is now set to contain the two terms ``snow'' and ``grass'', and the predicates ``is white'' and ``is green''; then truth for atomic sentences can be defined as follows:
+
+\begin{enumerate}
+\item Base clauses:
+\begin{itemize}
+\item Term: $\Quinequote{\text{\eenskip{}Snow}}$ refers to snow.
+\item Term: $\Quinequote{\text{\eenskip{}Grass}}$ refers to grass.
+\item Predicate: $a$ satisfies $\Quinequote{\text{\eenskip{}is white}}$ if and only if $a$ is white.
+\item Predicate: $a$ satisfies $\Quinequote{\text{\eenskip{}is green}}$ if and only if $a$ is green.
+\end{itemize}
+\item An atomic sentence \Quinequote{P(T)} is true if and only if the referent of $\Quinequote{T}$ satisfies $\Quinequote{P}$.
+\end{enumerate}
+
+This shows an example of how objects in the real world can be referenced from within formal languages and how Tarski's theory can be used to evaluate the truth of such sentences.
+
+\textit{References: http://plato.stanford.edu/entries/truth/}
 
 \item \textbf{Describe rationality. How is it defined?}
 
-Rationality is defined as ``doing the right thing'' given the available information. Rationality describes the ability to base reasoning on logical inferences from available information and to act consistent with the available information to achieve goals established through reasoning. Within artificial intelligence a \textit{rational agent} will model the available information such that it can always perform the action available with the optimal expected outcome according to its goals. The goals of a rational agent will normally be modeled by utility functions which are used to calculate the expected outcome of different actions. Due to complexity it will often be impossible to always perform actions with optimal expected outcome, so in practice the term \textit{limited rationality} is used to describe acting appropriately when there is insufficient time to calculate the optimal answer.
+Rationality is defined as ``doing the right thing'' given the available information. Rationality describes the ability to base reasoning on logical inferences from available information and to act consistent with the available information to achieve goals established through reasoning.
+
+Within artificial intelligence a \textit{rational agent} will use the available information to perform actions which are as optimal as achievable according to a specified performance measure. The goals of a rational agent will typically be modeled by a utility function which is used to calculate the expected outcome of different actions. Due to complexity it will often be impossible to always perform actions with optimal expected outcome, so in practice the term \textit{limited rationality} is used to describe acting appropriately when there is insufficient time to calculate the optimal answer.
 
 \item \textbf{Consider a robot whose task it is to cross the road. Its action portfolio looks like this: look-back, look-forward, look-left-look-right, go-forward, go-back, go-left and go-right.}
 
@@ -42,19 +102,36 @@ Rationality is defined as ``doing the right thing'' given the available informat
 
 \item \textbf{While crossing the road, a helicopter falls down on the robot and smashes it. Is the robot rational?}
 
-Given that a) the robot's choice to cross the road was rational to begin with, and b) that the robot did not possess information indicating that a helicopter crashing into the road would be a distinct possibility, and c) that the robot was not built with sensors allowing it to sense the incoming helicopter as well as the agility necessary to avoid it; then the robot should not be faulted for the resulting outcome, and it can be said that the robot acted rationally even if the outcome was unfortunate. 
+Given that
+\begin{inparaenum}[\itshape a\upshape)]
+\item the robot's choice to cross the road was rational to begin with; and
+\item that the robot did not possess information indicating that a helicopter crashing into the road would be a distinct possibility; and
+\item that the robot was not built with sensors allowing it to sense the incoming helicopter as well as the agility necessary to avoid it;
+\end{inparaenum}
+then it can be said that the robot acted rationally even if the outcome was unfortunate.
 
 \item \textbf{While crossing the road on a green light, a passing car crashes into the robot, preventing it from crossing. Is the robot rational?}
 
-This scenario is similar to the helicopter scenario; however this case is different both because a car driving on a road is normal and because a car running a red light has a distinct chance of occurring. A human stumbling into the road when given a green light, without further observing the environment, would easily be considered irrational since a) observing the environment to check for passing cars is within the sensing capabilities of a human, and b) observing the environment to check for passing cars has a low cost, and c) the consequence of being hit by a car is in general high and possibly fatal.
+This scenario is similar to the helicopter scenario; however this case is different both because a car driving on a road is normal and because a car running a red light has a reasonable chance of occurring. A human stumbling into the road when given a green light, without further observing the environment, would easily be considered irrational since
+\begin{inparaenum}[\itshape a\upshape)]
+\item observing the environment to check for passing cars is within the sensing capabilities of a human; and
+\item observing the environment to check for passing cars has a low cost; and
+\item the consequence of being hit by a car is in general high and possibly fatal.
+\end{inparaenum}
 
-Designing a robot meant to cross a traditional road controlled by light signals without providing it with further sensing would be irresponsible. If the robot is not equipped with the sensing capabilities to sense the passing cars and its mission to cross the road is rational, then the robot cannot be faulted for being struck by a passing car. If the robot was built in a more sensible manner with the appropriate sensing capabilities it could be faulted if struck by a passing car for the same reason a human would be considered irrational. The driver of the car would still be fully at fault for running into someone while running a red light, but the robot could be considered less than fully rational for not being as cautious as it should.
+Designing a robot meant to cross a traditional road controlled by light signals without providing it with further sensing would be cruel. If the robot is not equipped with the sensing capabilities to sense the passing cars and its mission to cross the road is rational, then the robot cannot be faulted for being struck by a passing car. If the robot was built in a more sensible manner with the appropriate sensing capabilities it could be faulted if struck by a passing car for the same reason a human would be considered irrational. The driver of the car would still be fully at fault for running into someone while running a red light, but the robot could be considered less than perfectly rational for not being as cautious as it should.
 
 \end{enumerate}
 
 \item \textbf{Consider the vacuum cleaner world described in Chapter 2.2.1 of the textbook. Let us modify this vacuum environment so that the agent is penalized 1 point for each movement.}
 
-In the following answers it is assumed that the robot is to be evaluated on the premise of being a rational agent, and that its performance measure is to be awarded 1 point for each clean square per time step over a lifetime of 1000 time steps, and that the robot is penalized 1 point for every movement made.
+In the following answers it is assumed that the robot is to be evaluated on the premise of being a rational agent and according to the following performance measure:
+
+\begin{itemize}
+\item The time span of the scenario is 1000 time steps.
+\item 1 point is awarded for each clean square per time step.
+\item 1 point is deducted for every movement made by the robot.
+\end{itemize}
 
 \begin{enumerate}
 
@@ -115,15 +192,15 @@ $\mathit{[B, Dirty, Clean]}$ & $\mathit{Left}$ \\
 
 \item \textbf{Deterministic vs. stochastic} -- The vacuum cleaner environment is an ideal environment where each following state is completely determined by the current state and the action performed by the vacuum cleaner agent. This makes the environment deterministic.
 
-\item \textbf{Episodic vs. sequential} -- The vacuum cleaner environment could be considered episodic as each location is considered atomically and does not depend on actions taken in other locations. For each location the agent performs its action as a direct consequence of its current percepts. There is also an element of sequentiality to the environment as the cleaning of a location can affect the decision to return to the location if the robot has the state or perception to allow this.
+\item \textbf{Episodic vs. sequential} -- The vacuum cleaner environment could be considered episodic as each location is considered atomically and does not depend on actions taken in other locations. For each location the agent performs its action as a direct consequence of its current percepts. There is also an element of sequentiality to the environment both because the robot must move to a location before the location can be cleaned; and because the cleaning of a location can affect the decision to return to the location if the robot has the state or perception to allow this.
 
 \item \textbf{Statis vs. dynamic} -- The vacuum cleaner environment does not change while the robot is deliberating, however as the performance score changes with time the environment can be described as semi-dynamic. If both locations are dirty and the robot spends time deliberating, the robot will lose out on attainable points compared to if it had cleaned out locations which would earn it points in the time passed.
 
-\item \textbf{Discrete vs. continuous} -- The vacuum cleaner environment is described as an ideal environment where all properties; spatial locations, time steps, reward system, the robot's perception and the robot's actions are discrete.
+\item \textbf{Discrete vs. continuous} -- The vacuum cleaner environment is described as an ideal environment where the spatial locations, the cleanliness of each location, time steps, the robot's perceptions, the robot's actions, and the reward system are all discrete.
 
 \item \textbf{Known vs. unknown} -- In the vacuum cleaner environment the consequences of all possible actions are known.
 
-Overall the vacuum cleaner environment represents an easy agent environment; \textit{fully observable}, \textit{single-agent}, \textit{deterministic}, \textit{mostly episodic}, \textit{semi-dynamic}, \textit{discrete} and \textit{known}.
+Overall the vacuum cleaner environment represents an easy agent environment; \textit{fully observable}, \textit{single-agent}, \textit{deterministic}, \textit{almost no sequentiality}, \textit{semi-dynamic}, \textit{discrete} and \textit{known}.
 
 \end{enumerate}
 
