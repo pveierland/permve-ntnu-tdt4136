@@ -22,64 +22,74 @@
 
 \item \textbf{AIMA Exercise 7.1 / 6.1 -- ``Suppose the agent has\ldots''.}
 
-The agent starts in the known safe location (1, 1) facing in the \textit{right} direction.
+Following is a listing of the inferences, percepts and actions made by the agent. The R-sentences shows the contents of the knowledge base. Relevant new knowledge is underlined when concluded for readability.
 
-\begin{tabular}{rll}
-R1: & $OK_{1,1}$ & Known from game mechanics \\
-R2: & $OK_{1,1} \Rightarrow \neg P_{1,1}$ & Known from game mechanics \\
-R3: & $OK_{1,1} \Rightarrow \neg W_{1,1}$ & Known from game mechanics \\
-R4: & \underline{$\neg B_{1,1} \land \neg G_{1,1} \land \neg S_{1,1}$} & Percepts in (1, 1) \\
-R5: & $B_{1,1} \Leftrightarrow P_{1,2} \lor P_{2,1}$ & Known from game mechanics \\
-R6: & $(B_{1,1} \Rightarrow P_{1,2} \lor P_{2,1}) \land (P_{1,2} \lor P_{2,1} \Rightarrow B_{1,1})$ & From R5 (Biconditional elimination) \\
-R7: & $(P_{1,2} \lor P_{2,1}) \Rightarrow B_{1,1}$ & From R6 (And-elimination) \\
-R8: & $\neg B_{1,1} \Rightarrow \neg (P_{1,2} \lor P_{2,1}$ & From R7 (Equivalence of contrapositive) \\
-R9: & $\neg (P_{1,2} \lor P_{2,1})$ & From R4 and R8 (Modus Ponens) \\
-R10: & \underline{$\neg P_{2,1} \land \neg P_{2,1}$} & From R9 (De Morgan's theorem) \\
-R11: & $S_{1,1} \Leftrightarrow W_{1,2} \lor W_{2,1}$ & Known from game mechanics \\
-R12: & \underline{$\neg W_{1,2} \land \neg W_{2,1}$} & From R4 and R11 (see R5-R10) \\
-R13: & $OK_{1,2} \Leftrightarrow \neg P_{1,2} \land \neg W_{1,2}$ & From game mechanics \\
-R14: & $(OK_{1,2} \Rightarrow \neg P_{1,2} \land \neg W_{1,2}) \land (\neg P_{1,2} \land \neg W_{1,2} \Rightarrow OK_{1,2})$ & From R13 (Equivalence of contrapositive) \\
-R15: & $\neg P_{1,2} \land \neg W_{1,2} \Rightarrow OK_{1,2}$ & From R14 (And-elimination) \\
-R16: & \underline{$OK_{1,2}$} & Modus Ponens to R15 given R10 and R12 \\
-R17: & \underline{$OK_{2,1}$} & From R10 and R12 (see R13-R16) \\
-\end{tabular}
+\textit{The agent starts in the known safe location [1,1] facing in the right direction.}
 
-\textit{The agent chooses to move to the safe location (2, 1). Actions: Forward.}
+\begin{longtable}{rll}
+R1: & \underline{$OK_{1,1}$} & Initial knowledge \\
+R2: & $OK_{1,1} \Leftrightarrow \neg P_{1,1} \land \neg W_{1,1}$ & Known from game mechanics \\
+R3: & \underline{$\neg P_{1,1}$} & From R1 and R2 (Modus P. + and-elimination) \\
+R4: & \underline{$\neg W_{1,1}$} & From R1 and R2 (Modus P. + and-elimination) \\
+R5: & \underline{$\neg B_{1,1} \land \neg G_{1,1} \land \neg S_{1,1}$} & Percepts in [1,1] \\
+R6: & $B_{1,1} \Leftrightarrow P_{1,2} \lor P_{2,1}$ & Known from game mechanics \\
+R7: & $(B_{1,1} \Rightarrow P_{1,2} \lor P_{2,1}) \land (P_{1,2} \lor P_{2,1} \Rightarrow B_{1,1})$ & From R6 (Biconditional elimination) \\
+R8: & $(P_{1,2} \lor P_{2,1}) \Rightarrow B_{1,1}$ & From R7 (And-elimination) \\
+R9: & $\neg B_{1,1} \Rightarrow \neg (P_{1,2} \lor P_{2,1})$ & From R8 (Equivalence of contrapositive) \\
+R10: & $\neg (P_{1,2} \lor P_{2,1})$ & From R5 and R9 (Modus Ponens) \\
+R11: & \underline{$\neg P_{2,1} \land \neg P_{2,1}$} & From R10 (De Morgan's theorem) \\
+R12: & $S_{1,1} \Leftrightarrow W_{1,2} \lor W_{2,1}$ & Known from game mechanics \\
+R13: & \underline{$\neg W_{1,2} \land \neg W_{2,1}$} & From R5 and R12 (see R6-R11) \\
+R14: & $OK_{1,2} \Leftrightarrow \neg P_{1,2} \land \neg W_{1,2}$ & From game mechanics \\
+R15: & $(OK_{1,2} \Rightarrow \neg P_{1,2} \land \neg W_{1,2}) \land (\neg P_{1,2} \land \neg W_{1,2} \Rightarrow OK_{1,2})$ & From R14 (Equivalence of contrapositive) \\
+R16: & $\neg P_{1,2} \land \neg W_{1,2} \Rightarrow OK_{1,2}$ & From R15 (And-elimination) \\
+R17: & \underline{$OK_{1,2}$} & Modus Ponens to R16 given R11 and R13 \\
+R18: & \underline{$OK_{2,1}$} & From R11 and R13 (see R14-R17) \\
+\end{longtable}
+\addtocounter{table}{-1}
 
-\begin{tabular}{rll}
-R18: & \underline{$B_{2,1} \land \neg G_{2,1} \land \neg S_{2,1}$} & Percepts in (2, 1) \\
-R19: & $B_{2,1} \Leftrightarrow P_{1,1} \lor P_{2,2} \lor P_{3,1}$ & Known from game mechanics \\
-R20: & $P_{1,1} \lor P_{2,2} \lor P_{3,1}$ & From R18 and R19 (Bicondition of truth) \\
-R21: & \underline{$P_{2,2} \lor P_{3,1}$} & From R2 and R20 (Resolution) \\
-R22: & $S_{2,1} \Leftrightarrow W_{1,1} \lor W_{2,2} \lor W_{3,1}$ & Known from game mechanics \\
-R23: & $\neg W_{1,1} \land \neg W_{2,2} \land \neg W_{3,1}$ & From R18 and R22 (see R5-R10) \\
-R24: & \underline{$\neg W_{2,2} \land \neg W_{3,1}$} & From R3 and R23 (Removed redundancy) \\
-\end{tabular}
+\textit{The agent moves to the known safe location [2,1] facing right. Actions: Forward.}
 
-\textit{The agent moves to location (1,2) through location (1,1) as this is the only remaining location known to be safe. Actions: TurnRight, TurnRight, Forward, TurnRight, Forward.}
+\begin{longtable}{rll}
+R19: & \underline{$B_{2,1} \land \neg G_{2,1} \land \neg S_{2,1}$} & Percepts in [2,1] \\
+R20: & $B_{2,1} \Leftrightarrow P_{1,1} \lor P_{2,2} \lor P_{3,1}$ & Known from game mechanics \\
+R21: & $P_{1,1} \lor P_{2,2} \lor P_{3,1}$ & From R19 and R20 (Modus Ponens) \\
+R22: & \underline{$P_{2,2} \lor P_{3,1}$} & From R3 and R21 (Resolution) \\
+R23: & $S_{2,1} \Leftrightarrow W_{1,1} \lor W_{2,2} \lor W_{3,1}$ & Known from game mechanics \\
+R24: & $\neg W_{1,1} \land \neg W_{2,2} \land \neg W_{3,1}$ & From R19 and R23 (see R6-R11) \\
+R25: & \underline{$\neg W_{2,2} \land \neg W_{3,1}$} & From R4 and R24 (Removed redundancy) \\
+\end{longtable}
+\addtocounter{table}{-1}
 
-\begin{tabular}{rll}
-R25: & \underline{$\neg B_{1,2} \land \neg G_{1,2} \land S_{1,2}$} & Percepts in (1, 2) \\
-R26: & $B_{1,2} \Leftrightarrow P_{1,1} \lor P_{2,2} \lor P_{1,3}$ & Known from game mechanics \\
-R27: & $\neg P_{1,1} \land \neg P_{1,3} \land \neg P_{2,2}$ & From R25 and R26 (see R5-R10) \\ 
-R28: & \underline{$\neg P_{1,3} \land \neg P_{2,2}$} & From R2 and R27 (Removed redundancy) \\
-R29: & \underline{$P_{3,1}$} & From R21 and R28 (Resolution) \\
-R30: & $OK_{2,2} \Leftrightarrow \neg P_{2,2} \land \neg W_{2,2}$ & Known from game mechanics \\
-R31: & \underline{$OK_{2,2}$} & From R24, R28 and R30 (Bicondition of truth) \\
-R32: & $S_{1,2} \Leftrightarrow W_{1,1} \lor W_{2,2} \lor W_{1,3}$ & Known from game mechanics \\
-R33: & $W_{1,1} \lor W_{2,2} \lor W_{1,3}$ & From R25 and R32 (Bicondition of truth) \\
-R34: & \underline{$W_{1,3}$} & From R3, R24 and R33 (Resolution) \\
-R35: & $OK_{1,3} \Leftrightarrow \neg P_{1,3} \land \neg W_{1,3}$ & Known from game mechanics \\
-R36: & \underline{$\neg OK_{1,3}$} & From R34 and R35 (see R13-R15) \\
-\end{tabular}
+\textit{The agent moves to location [1,2] through location [1,1] as this is the only remaining location known to be safe. Actions: TurnRight, TurnRight, Forward, TurnRight, Forward. The agent faces upwards.}
 
-\newcommand{\F}{{\color{WildStrawberry}false}}
-\newcommand{\T}{{\color{YellowGreen}true}}
+\begin{longtable}{rll}
+R26: & \underline{$\neg B_{1,2} \land \neg G_{1,2} \land S_{1,2}$} & Percepts in [1,2] \\
+R27: & $B_{1,2} \Leftrightarrow P_{1,1} \lor P_{2,2} \lor P_{1,3}$ & Known from game mechanics \\
+R28: & $\neg P_{1,1} \land \neg P_{1,3} \land \neg P_{2,2}$ & From R26 and R27 (see R6-R11) \\ 
+R29: & \underline{$\neg P_{1,3} \land \neg P_{2,2}$} & From R3 and R28 (Removed redundancy) \\
+R30: & \underline{$P_{3,1}$} & From R22 and R29 (Resolution) \\
+R31: & $OK_{2,2} \Leftrightarrow \neg P_{2,2} \land \neg W_{2,2}$ & Known from game mechanics \\
+R32: & \underline{$OK_{2,2}$} & From R25, R29 and R31 (Modus Ponens) \\
+R33: & $S_{1,2} \Leftrightarrow W_{1,1} \lor W_{2,2} \lor W_{1,3}$ & Known from game mechanics \\
+R34: & $W_{1,1} \lor W_{2,2} \lor W_{1,3}$ & From R26 and R33 (Modus Ponens) \\
+R35: & \underline{$W_{1,3}$} & From R4, R25 and R34 (Resolution) \\
+R36: & $OK_{1,3} \Leftrightarrow \neg P_{1,3} \land \neg W_{1,3}$ & Known from game mechanics \\
+R37: & \underline{$\neg OK_{1,3}$} & From R35 and R36 (see R14-R16) \\
+\end{longtable}
+\addtocounter{table}{-1}
 
-\begin{tabular}{c|cccccc|cc|c}
+The knowledge base now contains all percepts and inferences made by the agent after vising locations [1,1], [2,1] and [1,2]. The permutations of possible worlds concerning the locations [1,3], [2,2] and [3,1] together with sentences $\alpha_2 = \neg P_{2,2}$, $\alpha_3 = W_{1,3}$ and the knowledge base ($KB$) is shown in Table~\ref{table:wompus_truths}. 
 
+It is clear that sentences $\alpha_2$ and $\alpha_3$ are true in all models in which $KB$ is true. From this it follows that $KB \vDash \alpha_2$ and that $KB \vDash \alpha_3$.
+
+\newcommand{\F}{{\color{WildStrawberry}\small false}}
+\newcommand{\T}{{\color{YellowGreen}\small true}}
+
+\begin{longtable}[c]{c|cccccc|cc|c}
 World & $W_{1,3}$ & $W_{2,2}$ & $W_{3,1}$ & $P_{1,3}$ & $P_{2,2}$ & $P_{3,1}$ & $\alpha_2$ & $\alpha_3$ & $KB$ \\ 
 \hline
+\endhead
 1	  & \F        & \F        & \F        & \F        & \F        & \F        & \T         & \F         & \F   \\
 2	  & \F        & \F        & \F        & \F        & \F        & \T        & \T         & \F         & \F   \\
 3	  & \F        & \F        & \F        & \F        & \T        & \F        & \F         & \F         & \F   \\
@@ -112,8 +122,204 @@ World & $W_{1,3}$ & $W_{2,2}$ & $W_{3,1}$ & $P_{1,3}$ & $P_{2,2}$ & $P_{3,1}$ & 
 30	  & \T        & \F        & \F        & \T        & \F        & \T        & \T         & \T         & \F   \\
 31	  & \T        & \F        & \F        & \T        & \T        & \F        & \F         & \T         & \F   \\
 32	  & \T        & \F        & \F        & \T        & \T        & \T        & \F         & \T         & \F   \\
+\caption{Model table showing $KB$, $\alpha_2$ and $\alpha_3$ truth values (Problem 1.1)}
+\label{table:wompus_truths}
+\end{longtable}
 
+\item \textbf{AIMA Exercise 7.4 / 6.4 -- ``Which of the following are correct?''.}
+
+\begin{enumerate}
+\setcounter{enumii}{2}
+
+\item 
+\begin{tabular}{ccc|c|c}
+$(A$ & $\land$ & $B)$ & $\vDash$ & $(A \Leftrightarrow B)$\\
+\hline
+\F & \F & \F & \T & \T \\
+\F & \F & \T & \T & \F \\
+\T & \F & \F & \T & \F \\
+\T & \T & \T & \T & \T \\
 \end{tabular}
+
+The sentence $(A \land B) \vDash (A \Leftrightarrow B)$ is true in all models and is therefore valid.
+
+\item
+\begin{tabular}{ccc|c|c}
+$(A$ & $\Leftrightarrow$ & $B)$ & $\vDash$ & $(A \lor B)$ \\
+\hline
+\F & \T & \F & \F & \F \\
+\F & \F & \T & \T & \T \\
+\T & \F & \F & \T & \T \\
+\T & \T & \T & \T & \T \\
+\end{tabular}
+
+The sentence $(A \Leftrightarrow B) \vDash (A \lor B)$ is not true in all models and is therefore invalid.
+
+\item
+\begin{tabular}{ccc|c|ccc}
+$(A$ & $\Leftrightarrow$ & $B)$ & $\vDash$ & $(\neg A$ & $\lor$ & $B)$ \\
+\hline
+\F & \T & \F & \T & \T & \T & \F \\
+\F & \F & \T & \T & \T & \T & \T \\
+\T & \F & \F & \T & \F & \F & \F \\
+\T & \T & \T & \T & \F & \T & \T \\
+\end{tabular}
+
+The sentence $(A \Leftrightarrow B) \vDash (\neg A \lor B)$ is true in all models and is therefore valid.
+
+\item
+\begin{tabular}{ccccc|c|ccc}
+$(A$ & $\land$ & $B)$ & $\Rightarrow$ & $C$ & $\vDash$ & $(A \Rightarrow C)$ & $\lor$ & $(B \Rightarrow C)$\\
+\hline
+\F & \F & \F & \T & \F & \T & \T & \T & \T\\
+\F & \F & \F & \T & \T & \T & \T & \T & \T\\
+\F & \F & \T & \T & \F & \T & \T & \T & \F\\
+\F & \F & \T & \T & \T & \T & \T & \T & \T\\
+\T & \F & \F & \T & \F & \T & \F & \T & \T\\
+\T & \F & \F & \T & \T & \T & \T & \T & \T\\
+\T & \T & \T & \F & \F & \T & \F & \F & \F\\
+\T & \T & \T & \T & \T & \T & \T & \T & \T\\
+\end{tabular}
+
+The sentence $\big((A \land B) \Rightarrow C\big) \vDash \big((A \Rightarrow C) \lor (B \Rightarrow C)\big)$ is true in all models and is therefore valid.
+
+\item
+\begin{tabular}{ccccc|c|ccccccc}
+$C$ & $\lor$ & $(\neg A$ & $\land$ & $\neg B)$ & $\equiv$ & $(A$ & $\Rightarrow$ & $C)$ & $\land$ & $(B$ & $\Rightarrow$ & $C)$\\
+\hline
+\F & \T & \T & \T & \T & \T & \F & \T & \F & \T & \F & \T & \F \\
+\T & \T & \T & \T & \T & \T & \F & \T & \T & \T & \F & \T & \T \\
+\F & \F & \T & \F & \F & \T & \F & \T & \F & \F & \T & \F & \F \\
+\T & \T & \T & \F & \F & \T & \F & \T & \T & \T & \T & \T & \T \\
+\F & \F & \F & \F & \T & \T & \T & \F & \F & \F & \F & \T & \F \\
+\T & \T & \F & \F & \T & \T & \T & \T & \T & \T & \F & \T & \T \\
+\F & \F & \F & \F & \F & \T & \T & \F & \F & \F & \T & \F & \F \\
+\T & \T & \F & \F & \F & \T & \T & \T & \T & \T & \T & \T & \T \\
+\end{tabular}
+
+The sentence $C \lor (\neg A \land \neg B) \equiv (A \Rightarrow C) \land (B \Rightarrow C)$ is true in all models and is therefore valid.
+
+\item
+\begin{tabular}{ccccccccc|c|c}
+$(A$ & $\lor$ & $B)$ & $\land$ & $\big(\neg C$ & $\lor$ & $(\neg D$ & $\lor$ & $E)\big)$ & $\vDash$ & $(A \lor B)$\\
+\hline
+\F & \F & \F & \F & \T & \T & \T & \T & \F & \T & \F \\
+\F & \F & \F & \F & \T & \T & \T & \T & \T & \T & \F \\
+\F & \F & \F & \F & \T & \T & \F & \F & \F & \T & \F \\
+\F & \F & \F & \F & \T & \T & \F & \T & \T & \T & \F \\
+\F & \F & \F & \F & \F & \T & \T & \T & \F & \T & \F \\
+\F & \F & \F & \F & \F & \T & \T & \T & \T & \T & \F \\
+\F & \F & \F & \F & \F & \F & \F & \F & \F & \T & \F \\
+\F & \F & \F & \F & \F & \T & \F & \T & \T & \T & \F \\
+\F & \T & \T & \T & \T & \T & \T & \T & \F & \T & \T \\
+\F & \T & \T & \T & \T & \T & \T & \T & \T & \T & \T \\
+\F & \T & \T & \T & \T & \T & \F & \F & \F & \T & \T \\
+\F & \T & \T & \T & \T & \T & \F & \T & \T & \T & \T \\
+\F & \T & \T & \T & \F & \T & \T & \T & \F & \T & \T \\
+\F & \T & \T & \T & \F & \T & \T & \T & \T & \T & \T \\
+\F & \T & \T & \F & \F & \F & \F & \F & \F & \T & \T \\
+\F & \T & \T & \T & \F & \T & \F & \T & \T & \T & \T \\
+\T & \T & \F & \T & \T & \T & \T & \T & \F & \T & \T \\
+\T & \T & \F & \T & \T & \T & \T & \T & \T & \T & \T \\
+\T & \T & \F & \T & \T & \T & \F & \F & \F & \T & \T \\
+\T & \T & \F & \T & \T & \T & \F & \T & \T & \T & \T \\
+\T & \T & \F & \T & \F & \T & \T & \T & \F & \T & \T \\
+\T & \T & \F & \T & \F & \T & \T & \T & \T & \T & \T \\
+\T & \T & \F & \F & \F & \F & \F & \F & \F & \T & \T \\
+\T & \T & \F & \T & \F & \T & \F & \T & \T & \T & \T \\
+\T & \T & \T & \T & \T & \T & \T & \T & \F & \T & \T \\
+\T & \T & \T & \T & \T & \T & \T & \T & \T & \T & \T \\
+\T & \T & \T & \T & \T & \T & \F & \F & \F & \T & \T \\
+\T & \T & \T & \T & \T & \T & \F & \T & \T & \T & \T \\
+\T & \T & \T & \T & \F & \T & \T & \T & \F & \T & \T \\
+\T & \T & \T & \T & \F & \T & \T & \T & \T & \T & \T \\
+\T & \T & \T & \F & \F & \F & \F & \F & \F & \T & \T \\
+\T & \T & \T & \T & \F & \T & \F & \T & \T & \T & \T \\
+\end{tabular}
+
+The sentence $(A \lor B) \land (\neg C \lor \neg D \lor E) \vDash (A \lor B)$ is true in all models and is therefore valid. In the model table the sentence $(\neg C \lor \neg D \lor E)$ has been rewritten as $\neg C \lor (\neg D \lor E)$ to ease formatting (by the associativity of $\lor$).
+
+\item
+\begin{tabular}{ccccccccc|c|ccc}
+$(A$ & $\lor$ & $B)$ & $\land$ & $\big(\neg C$ & $\lor$ & $(\neg D$ & $\lor$ & $E)\big)$ & $\vDash$ & $(A \lor B)$ & $\land$ & $(\neg D \lor E)$\\
+\hline
+\F & \F & \F & \F & \T & \T & \T & \T & \F & \T & \F& \F & \T \\
+\F & \F & \F & \F & \T & \T & \T & \T & \T & \T & \F& \F & \T \\
+\F & \F & \F & \F & \T & \T & \F & \F & \F & \T & \F& \F & \F \\
+\F & \F & \F & \F & \T & \T & \F & \T & \T & \T & \F& \F & \T \\
+\F & \F & \F & \F & \F & \T & \T & \T & \F & \T & \F& \F & \T \\
+\F & \F & \F & \F & \F & \T & \T & \T & \T & \T & \F& \F & \T \\
+\F & \F & \F & \F & \F & \F & \F & \F & \F & \T & \F& \F & \F \\
+\F & \F & \F & \F & \F & \T & \F & \T & \T & \T & \F& \F & \T \\
+\F & \T & \T & \T & \T & \T & \T & \T & \F & \T & \T& \T & \T \\
+\F & \T & \T & \T & \T & \T & \T & \T & \T & \T & \T& \T & \T \\
+\F & \T & \T & \T & \T & \T & \F & \F & \F & \F & \T& \F & \F \\
+\F & \T & \T & \T & \T & \T & \F & \T & \T & \T & \T& \T & \T \\
+\F & \T & \T & \T & \F & \T & \T & \T & \F & \T & \T& \T & \T \\
+\F & \T & \T & \T & \F & \T & \T & \T & \T & \T & \T& \T & \T \\
+\F & \T & \T & \F & \F & \F & \F & \F & \F & \T & \T& \F & \F \\
+\F & \T & \T & \T & \F & \T & \F & \T & \T & \T & \T& \T & \T \\
+\T & \T & \F & \T & \T & \T & \T & \T & \F & \T & \T& \T & \T \\
+\T & \T & \F & \T & \T & \T & \T & \T & \T & \T & \T& \T & \T \\
+\T & \T & \F & \T & \T & \T & \F & \F & \F & \F & \T& \F & \F \\
+\T & \T & \F & \T & \T & \T & \F & \T & \T & \T & \T& \T & \T \\
+\T & \T & \F & \T & \F & \T & \T & \T & \F & \T & \T& \T & \T \\
+\T & \T & \F & \T & \F & \T & \T & \T & \T & \T & \T& \T & \T \\
+\T & \T & \F & \F & \F & \F & \F & \F & \F & \T & \T& \F & \F \\
+\T & \T & \F & \T & \F & \T & \F & \T & \T & \T & \T& \T & \T \\
+\T & \T & \T & \T & \T & \T & \T & \T & \F & \T & \T& \T & \T \\
+\T & \T & \T & \T & \T & \T & \T & \T & \T & \T & \T& \T & \T \\
+\T & \T & \T & \T & \T & \T & \F & \F & \F & \F & \T& \F & \F \\
+\T & \T & \T & \T & \T & \T & \F & \T & \T & \T & \T& \T & \T \\
+\T & \T & \T & \T & \F & \T & \T & \T & \F & \T & \T& \T & \T \\
+\T & \T & \T & \T & \F & \T & \T & \T & \T & \T & \T& \T & \T \\
+\T & \T & \T & \F & \F & \F & \F & \F & \F & \T & \T& \F & \F \\
+\T & \T & \T & \T & \F & \T & \F & \T & \T & \T & \T& \T & \T \\
+\end{tabular}
+
+The sentence $(A \lor B) \land (\neg C \lor \neg D \lor E) \vDash (A \lor B) \land (\neg D \lor E)$ is not true in all models and is therefore not valid. In the model table the sentence $(\neg C \lor \neg D \lor E)$ has been rewritten as $\neg C \lor (\neg D \lor E)$ to ease formatting (by the associativity of $\lor$).
+
+\item
+\begin{tabular}{ccc|c|cc}
+$(A$ & $\lor$ & $B)$ & $\land$ & $\neg$ & $(A \Rightarrow B)$\\
+\hline
+\F & \F & \F & \F & \F & \T \\
+\F & \T & \T & \F & \F & \T \\
+\T & \T & \F & \T & \T & \F \\
+\T & \T & \T & \F & \F & \T \\
+\end{tabular}
+
+The model $A \land \neg B$ satisfies the sentence $(A \lor B) \land \neg (A \Rightarrow B)$.
+
+\item
+\begin{tabular}{ccc|c|ccc}
+$(A$ & $\Leftrightarrow$ & $B)$ & $\land$ & $(\neg A$ & $\lor$ & $B)$\\
+\hline
+\F & \T & \F & \T & \T & \T & \F \\
+\F & \F & \T & \F & \T & \T & \T \\
+\T & \F & \F & \F & \F & \F & \F \\
+\T & \T & \T & \T & \F & \T & \T \\
+\end{tabular}
+
+The models $\neg A \land \neg B$ and $A \land B$ both satisfy the sentence $(A \Leftrightarrow B) \land (\neg A \lor B)$.
+
+\item
+\begin{tabular}{ccc|c|c}
+$(A$ & $\Leftrightarrow$ & $B)$ & $\Leftrightarrow$ & $C$\\
+\hline
+\F & \T & \F & \F & \F\\
+\F & \T & \F & \T & \T\\
+\F & \F & \T & \T & \F\\
+\F & \F & \T & \F & \T\\
+\T & \F & \F & \T & \F\\
+\T & \F & \F & \F & \T\\
+\T & \T & \T & \F & \F\\
+\T & \T & \T & \T & \T\\
+\end{tabular}
+
+The sentence $(A \Leftrightarrow B)$ is satisfied by four models, which is the same number of models which satisfies $(A \Leftrightarrow B) \Leftrightarrow C$.
+
+\end{enumerate}
 
 \end{enumerate}
 
