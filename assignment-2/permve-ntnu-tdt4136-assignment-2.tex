@@ -321,6 +321,74 @@ The sentence $(A \Leftrightarrow B)$ is satisfied by four models, which is the s
 
 \end{enumerate}
 
+\item \textbf{Consider a logical knowledge base with 100 variables, $A_1$, $A_2$, \ldots, $A_{100}$. This will have $Q = 2^{100}$ possible models. For each logical sentence below, give the number of models that satisfy it.}
+
+\begin{enumerate}
+
+\item
+$\big(\frac{1}{2} \cdot \frac{1}{2}\big) \cdot 2^{100} =
+\frac{1}{4} \cdot 2^{100} =
+\frac{2^{100}}{2^2} =
+2^{98}$
+
+The logical sentence $A_{24} \land A_{50}$ is satisfied by $2^{98}$ models.
+
+\item
+$\big(\frac{1}{2} + \frac{1}{2} - \frac{1}{2} \cdot \frac{1}{2}\big) \cdot 2^{100} =
+\big(1 - \frac{1}{4}\big) \cdot 2^{100} =
+\frac{3}{4} \cdot 2^{100} =
+\frac{3 \cdot 2^{100}}{2^2} =
+3 \cdot 2^{98}$
+
+The logical sentence $\neg A_{38} \lor \neg A_{47}$ is satisfied by $3 \cdot 2^{98}$ models.
+
+\item
+To simplify the calculation the logical sentence $(A_{1} \lor \neg A_{57}) \land (A_{1} \lor \neg A_{99})$ can be rewritten as $(A_{1} \lor (\neg A_{57} \land \neg A_{99}))$ by the distributivity of $\lor$ over $\land$.
+
+$\big(\frac{1}{2} + \frac{1}{2} \cdot \frac{1}{2} - \frac{1}{2} \cdot \frac{1}{2} \cdot \frac{1}{2}\big) \cdot 2^{100} =
+\big(\frac{4}{8} + \frac{2}{8} - \frac{1}{8}\big) \cdot 2^{100} =
+\frac{5}{8} \cdot 2^{100} =
+\frac{5 \cdot 2^{100}}{2^3} =
+5 \cdot 2^{97}$
+
+The logical sentence $(A_{1} \lor \neg A_{57}) \land (A_{1} \lor \neg A_{99})$ is satisfied by $5 \cdot 2^{97}$ models.
+
+\item
+$\big(\frac{1}{2} \cdot \frac{1}{2} + \frac{1}{2} \cdot \frac{1}{2}\big) \cdot 2^{100} =
+\big(\frac{1}{4} + \frac{1}{4}\big) \cdot 2^{100} =
+\frac{1}{2} \cdot 2^{100} =
+\frac{2^{100}}{2^1} =
+2^{99}$
+
+The logical sentence $A_{58} \Leftrightarrow A_{90}$ is satisfied by $2^{99}$ models.
+
+\item
+$\big(\frac{1}{2}\big)^{6} \cdot 2^{100} =
+\frac{2^{100}}{2^6} =
+2^{94}$
+
+The logical sentence $A_1 \land \neg A_2 \land A_3 \land \neg A_4 \land A_5 \land \neg A_6$ is satisfied by $2^{94}$ models.
+
+\item
+$\Big(\big(\frac{1}{2}\big)^{50} + \big(\frac{1}{2}\big)^{50} - \big(\frac{1}{2}\big)^{50} \cdot \big(\frac{1}{2}\big)^{50}\Big) \cdot 2^{100} =
+\Big(2 \cdot \big(\frac{1}{2}\big)^{50} - \big(\frac{1}{2}\big)^{100}\Big) \cdot 2^{100} = \\
+\Big(\frac{2}{2^{50}} - \frac{1}{2^{100}}\Big) \cdot 2^{100} =
+\frac{2^{100}}{2^{49}} - \frac{2^{100}}{2^{100}} =
+2^{51} - 1$
+
+The logical sentence $(\neg A_1 \land \neg A_2 \land \ldots \land \neg A_{50}) \lor (A_{51} \land A_{52} \land \ldots \land A_{100})$ is satisfied by $2^{51} - 1$ models.
+
+\item
+$\Big(\big(\frac{1}{2}\big)^3 + \big(\frac{1}{2}\big)^3 - \big(\frac{1}{2}\big)^3 \cdot \big(\frac{1}{2}\big)^3\Big) \cdot 2^{100} =
+\big(\frac{2}{8} - \frac{1}{64}\big) \cdot 2^{100} =
+\frac{15}{64} \cdot 2^{100} =
+\frac{15 \cdot 2^{100}}{2^6} =
+15 \cdot 2^{94}$
+
+The logical sentence $(A_1 \land A_2 \land A_3) \lor (A_4 \land A_5 \land A_6)$ is satisfied by $15 \cdot 2^{94}$ models.
+
+\end{enumerate}
+
 \end{enumerate}
 
 
