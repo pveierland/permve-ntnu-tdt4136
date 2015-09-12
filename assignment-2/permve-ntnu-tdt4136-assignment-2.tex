@@ -18,6 +18,9 @@
 
 \section{Models and Entailment in Propositional Logic}
 
+\newacro{CNF}{Conjunctive Normal Form}
+\newacro{KB}{Knowledge Base}
+
 \begin{enumerate}
 
 \item \textbf{AIMA Exercise 7.1 / 6.1 -- ``Suppose the agent has\ldots''.}
@@ -395,25 +398,25 @@ The logical sentence $(A_1 \land A_2 \land A_3) \lor (A_4 \land A_5 \land A_6)$ 
 
 \begin{enumerate}
 
-\item \textbf{Convert each of the following sentences to Conjunctive Normal Form (CNF).}
+\item \textbf{Convert each of the following sentences to \acf{CNF}.}
 
 \begin{enumerate}
 
-\item $A \land \neg B \land C \equiv (A) \land (\neg B) \land (C)$
+\item $A \land \neg B \land C \equiv \underline{(A) \land (\neg B) \land (C)}$
 
-\item $\neg A \lor \neg B \lor \neg C \equiv (\neg A \lor \neg B \lor \neg C)$
+\item $\neg A \lor \neg B \lor \neg C \equiv \underline{(\neg A \lor \neg B \lor \neg C)}$
 
 \item
 $(\neg A \land B) \Rightarrow C \equiv
 \neg (\neg A \land B) \lor C \equiv
 \neg \neg A \lor \neg B \lor C \equiv
-(A \lor \neg B \lor C)$
+\underline{(A \lor \neg B \lor C)}$
 
 \item
 $(A \lor B) \Rightarrow \neg C \equiv
 \neg (A \lor B) \lor \neg C \equiv
 (\neg A \land \neg B) \lor \neg C \equiv
-(\neg A \lor \neg C) \land (\neg B \lor \neg C)$
+\underline{(\neg A \lor \neg C) \land (\neg B \lor \neg C)}$
 
 \item
 $(A \land B) \Leftrightarrow (C \land D) \equiv$\\
@@ -426,9 +429,39 @@ $\big((\neg A \lor \neg B) \lor (A \land B \land C \land D)\big) \land \big((\ne
 
 $(\neg A \lor \neg B \lor A) \land (\neg A \lor \neg B \lor B) \land (\neg A \lor \neg B \lor C) \land (\neg A \lor \neg B \lor D) \land\\(\neg C \lor \neg D \lor A) \land (\neg C \lor \neg D \lor B) \land (\neg C \lor \neg D \lor C) \land (\neg C \lor \neg D \lor D) \equiv $ 
 
-$(A \lor \neg C \lor \neg D) \land (\neg A \lor \neg B \lor C) \land (\neg A \lor \neg B \lor D) \land (B \lor \neg C \lor \neg D)$\\
+\underline{$(A \lor \neg C \lor \neg D) \land (\neg A \lor \neg B \lor C) \land (\neg A \lor \neg B \lor D) \land (B \lor \neg C \lor \neg D)$}
 
 \end{enumerate}
+
+\item \textbf{Consider the following \acf{KB}:}
+
+\begin{itemize}
+\item $(B \lor \neg C) \Rightarrow \neg A$
+\item $(\neg A \lor D) \Rightarrow B$
+\item $A \land C$
+\end{itemize}
+
+\textbf{Use resolution to show that $KB \vDash \neg D$.}
+
+To use resolution we begin with converting the knowledge base to \ac{CNF} since the resolution rule only applies to disjunctions of literals.
+
+\begin{itemize}
+\item $(B \lor \neg C) \Rightarrow \neg A \equiv \neg (B \lor \neg C) \lor \neg A \equiv (\neg B \land C) \lor \neg A \equiv \underline{(\neg B \lor \neg A) \land (C \lor \neg A)}$
+\item $(\neg A \lor D) \Rightarrow B \equiv \neg (\neg A \lor D) \lor B \equiv (A \land \neg D) \lor B \equiv \underline{(A \lor B) \land (B \lor \neg D)}$
+\item $A \land C \equiv \underline{(A) \land (C)}$
+\end{itemize}
+
+Proving entailment by resolution is done by showing a contradiction. To prove that $KB \vDash \neg D$ we show that $KB \land D$ is unsatisfiable.
+
+$KB \land D = (\neg B \lor \neg A) \land (C \lor \neg A) \land (A \lor B) \land (B \lor \neg D) \land (A) \land (C) \land (D)$
+
+\begin{enumerate}
+\item $\frac{(\neg B \lor \neg A),\quad (B \lor \neg D)}{\neg A \lor \neg D}$
+\item $\frac{(\neg A \lor \neg D),\quad (D)}{\neg A}$
+\item $\frac{\neg A,\quad A}{\textit{False}}$
+\end{enumerate}
+
+Since \textit{False} can be inferred from two clauses which must be true it is clear that there is a contradiction in the set of clauses. This contradiction proves that $KB \vDash D$ is unsatisfiable and therefore that $KB \vDash \neg D$ must be true.
 
 \end{enumerate}
 
