@@ -391,6 +391,46 @@ The logical sentence $(A_1 \land A_2 \land A_3) \lor (A_4 \land A_5 \land A_6)$ 
 
 \end{enumerate}
 
+\section{Resolution in Propositional Logic}
+
+\begin{enumerate}
+
+\item \textbf{Convert each of the following sentences to Conjunctive Normal Form (CNF).}
+
+\begin{enumerate}
+
+\item $A \land \neg B \land C \equiv (A) \land (\neg B) \land (C)$
+
+\item $\neg A \lor \neg B \lor \neg C \equiv (\neg A \lor \neg B \lor \neg C)$
+
+\item
+$(\neg A \land B) \Rightarrow C \equiv
+\neg (\neg A \land B) \lor C \equiv
+\neg \neg A \lor \neg B \lor C \equiv
+(A \lor \neg B \lor C)$
+
+\item
+$(A \lor B) \Rightarrow \neg C \equiv
+\neg (A \lor B) \lor \neg C \equiv
+(\neg A \land \neg B) \lor \neg C \equiv
+(\neg A \lor \neg C) \land (\neg B \lor \neg C)$
+
+\item
+$(A \land B) \Leftrightarrow (C \land D) \equiv$\\
+$(A \land B \Rightarrow C \land D) \land (C \land D \Rightarrow A \land B) \equiv$\\
+$\big(\neg (A \land B) \lor (C \land D)\big) \land \big(\neg (C \land D) \lor (A \land B)\big) \equiv$\\
+$\big(\neg (A \land B) \land \neg (C \land D)\big) \lor \big(\neg (A \land B) \land (A \land B)\big) \lor \big((C \land D) \land \neg (C \land D)\big) \lor \big((C \land D) \land (A \land B)\big) \equiv$\\
+$\big(\neg (A \land B) \land \neg (C \land D)\big) \lor \big((C \land D) \land (A \land B)\big) \equiv$\\
+$\big((\neg A \lor \neg B) \land (\neg C \lor \neg D)\big) \lor (A \land B \land C \land D) \equiv$\\
+$\big((\neg A \lor \neg B) \lor (A \land B \land C \land D)\big) \land \big((\neg C \lor \neg D) \lor (A \land B \land C \land D)\big) \equiv $ 
+
+$(\neg A \lor \neg B \lor A) \land (\neg A \lor \neg B \lor B) \land (\neg A \lor \neg B \lor C) \land (\neg A \lor \neg B \lor D) \land\\(\neg C \lor \neg D \lor A) \land (\neg C \lor \neg D \lor B) \land (\neg C \lor \neg D \lor C) \land (\neg C \lor \neg D \lor D) \equiv $ 
+
+$(A \lor \neg C \lor \neg D) \land (\neg A \lor \neg B \lor C) \land (\neg A \lor \neg B \lor D) \land (B \lor \neg C \lor \neg D)$\\
+
+\end{enumerate}
+
+\end{enumerate}
 
 \end{document}
 
