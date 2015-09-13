@@ -23,7 +23,7 @@
 
 \begin{enumerate}
 
-\item \textbf{AIMA Exercise 7.1 / 6.1 -- ``Suppose the agent has\ldots''.}
+\item \textbf{AIMA Exercise 6.1 -- ``Suppose the agent has\ldots''.}
 
 Following is a listing of the inferences, percepts and actions made by the agent. The R-sentences shows the contents of the knowledge base. Relevant new knowledge is underlined when concluded for readability.
 
@@ -40,7 +40,7 @@ R7: & $(B_{1,1} \Rightarrow P_{1,2} \lor P_{2,1}) \land (P_{1,2} \lor P_{2,1} \R
 R8: & $(P_{1,2} \lor P_{2,1}) \Rightarrow B_{1,1}$ & From R7 (And-elimination) \\
 R9: & $\neg B_{1,1} \Rightarrow \neg (P_{1,2} \lor P_{2,1})$ & From R8 (Equivalence of contrapositive) \\
 R10: & $\neg (P_{1,2} \lor P_{2,1})$ & From R5 and R9 (Modus Ponens) \\
-R11: & \underline{$\neg P_{2,1} \land \neg P_{2,1}$} & From R10 (De Morgan's theorem) \\
+R11: & \underline{$\neg P_{2,1} \land \neg P_{2,1}$} & From R10 (De Morgan's law) \\
 R12: & $S_{1,1} \Leftrightarrow W_{1,2} \lor W_{2,1}$ & Known from game mechanics \\
 R13: & \underline{$\neg W_{1,2} \land \neg W_{2,1}$} & From R5 and R12 (see R6-R11) \\
 R14: & $OK_{1,2} \Leftrightarrow \neg P_{1,2} \land \neg W_{1,2}$ & From game mechanics \\
@@ -129,7 +129,7 @@ World & $W_{1,3}$ & $W_{2,2}$ & $W_{3,1}$ & $P_{1,3}$ & $P_{2,2}$ & $P_{3,1}$ & 
 \label{table:wompus_truths}
 \end{longtable}
 
-\item \textbf{AIMA Exercise 7.4 / 6.4 -- ``Which of the following are correct?''.}
+\item \textbf{AIMA Exercise 6.4 -- ``Which of the following are correct?''.}
 
 \begin{enumerate}
 \setcounter{enumii}{2}
@@ -462,6 +462,69 @@ $KB \land D = (\neg B \lor \neg A) \land (C \lor \neg A) \land (A \lor B) \land 
 \end{enumerate}
 
 Since \textit{False} can be inferred from two clauses which must be true it is clear that there is a contradiction in the set of clauses. This contradiction proves that $KB \vDash D$ is unsatisfiable and therefore that $KB \vDash \neg D$ must be true.
+
+\item \textbf{AIMA Exercise 6.18 -- ``Consider the following sentence\ldots''.}
+
+\newcommand{\F}{{\color{WildStrawberry}\small false}}
+\newcommand{\T}{{\color{YellowGreen}\small true}}
+
+\begin{enumerate}
+
+\item
+\begin{tabular}{ccc|c|ccccc}
+$\big[(\textit{Food} \Rightarrow \textit{Party})$ & $\lor$ & $(\textit{Drinks} \Rightarrow \textit{Party})\big]$ & $\Rightarrow$ & $\big[(\textit{Food}$ & $\land$ & $\textit{Drinks})$ & $\Rightarrow$ & $\textit{Party}\big]$ \\
+\hline
+\T & \T & \T & \T & \F & \F & \F & \T & \F \\
+\T & \T & \T & \T & \F & \F & \F & \T & \T \\
+\T & \T & \F & \T & \F & \F & \T & \T & \F \\
+\T & \T & \T & \T & \F & \F & \T & \T & \T \\
+\F & \T & \T & \T & \T & \F & \F & \T & \F \\
+\T & \T & \T & \T & \T & \F & \F & \T & \T \\
+\F & \F & \F & \T & \T & \T & \T & \F & \F \\
+\T & \T & \T & \T & \T & \T & \T & \T & \T \\
+\end{tabular}
+
+The logical sentence $\big[(\textit{Food} \Rightarrow \textit{Party}) \lor (\textit{Drinks} \Rightarrow \textit{Party})\big] \Rightarrow \big[(\textit{Food} \land \textit{Drinks}) \Rightarrow \textit{Party}\big]$ is shown through enumeration to be valid as it is true in all models.
+
+\item
+
+\textbf{Left-hand side of main implication:}
+
+\begin{tabular}{ll}
+$(\textit{Food} \Rightarrow \textit{Party}) \lor (\textit{Drinks} \Rightarrow \textit{Party})$ & Elimination of implication\\
+$(\neg \textit{Food} \lor \textit{Party}) \lor (\neg \textit{Drinks} \lor \textit{Party})$ & Distribution of disjunction\\
+$\neg \textit{Food} \lor \textit{Party} \lor \neg \textit{Drinks} \lor \textit{Party}$ & Factoring of \textit{Party}\\
+$\neg Food \lor \textit{Party} \lor \neg \textit{Drinks}$ & \\
+\end{tabular}
+
+\textbf{Right-hand side of main implication:}
+
+\begin{tabular}{ll}
+$(\textit{Food} \land \textit{Drinks}) \Rightarrow \textit{Party}$ & Elimination of implication\\
+$\neg (\textit{Food} \land \textit{Drinks}) \lor \textit{Party}$ & De Morgan's law\\
+$(\neg \textit{Food} \lor \neg \textit{Drinks}) \lor \textit{Party}$ & Distribution of disjunction\\
+$\neg \textit{Food} \lor \textit{Party} \lor \neg \textit{Drinks}$ \\
+\end{tabular}
+
+Rewriting both sides of the main implication in \ac{CNF} shows that they are identical logical sentences. This means that they will have the same truth value for all models. Since an implication will always be true if both sides of the implication has the same truth value, the main implication will be satisfied in all models, making the sentence valid.
+
+\item
+
+We prove that the logical sentence $\big[(\textit{Food} \Rightarrow \textit{Party}) \lor (\textit{Drinks} \Rightarrow \textit{Party})\big] \Rightarrow \big[(\textit{Food} \land \textit{Drinks}) \Rightarrow \textit{Party}\big]$ is valid through proof by contradiction. It is shown that $\textit{LHS} \Rightarrow \textit{RHS}$ by showing that $\textit{LHS} \land \neg \textit{RHS}$ is unsatisfiable. The \ac{CNF} forms of \textit{LHS} and \textit{RHS} from \textit{3b} is reused.
+
+\begin{tabular}{ll}
+$(\neg \textit{F} \lor \textit{P} \lor \neg \textit{D}) \land \neg (\neg \textit{F} \lor \textit{P} \lor \neg \textit{D})$ & De Morgan's law \\
+$(\neg \textit{F} \lor \textit{P} \lor \neg \textit{D}) \land (\neg \neg \textit{F} \land \neg \textit{P} \land \neg \neg \textit{D})$ & Double-negation elimination \\
+$(\neg \textit{F} \lor \textit{P} \lor \neg \textit{D}) \land (\textit{F} \land \neg \textit{P} \land \textit{D})$ & Distributivity of $\land$ over $\lor$ \\
+$(\neg \textit{F} \land \textit{F} \land \neg \textit{P} \land \textit{D}) \lor (\textit{P} \land \textit{F} \land \neg \textit{P} \land \textit{D}) \lor (\neg \textit{D} \land \textit{F} \land \neg \textit{P} \land \textit{D})$ & Evaluate complementaries \\
+$\textit{False} \lor \textit{False} \lor \textit{False}$ & Evaluate \\
+$\textit{False}$ & \\
+\end{tabular}
+
+Through resolution it is shown that the logical sentence $\textit{LHS} \land \neg \textit{RHS}$ is unsatisfiable. This shows that $\textit{LHS} \Rightarrow \textit{RHS}$ is valid.
+
+\end{enumerate}
+
 
 \end{enumerate}
 
