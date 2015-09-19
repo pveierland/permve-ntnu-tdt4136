@@ -525,6 +525,96 @@ Through resolution it is shown that the logical sentence $\textit{LHS} \land \ne
 
 \end{enumerate}
 
+\end{enumerate}
+
+\section{Representations in First-Order Logic}
+
+\begin{enumerate}
+
+\item \textbf{AIMA Exercise 8.28 -- ``Consider a first-order logical knowledge base\ldots''.}
+
+\begin{enumerate}
+
+\item
+$\textit{Wrote}(\textit{Gershwin}, \textit{TheManILove})$
+
+\item
+$\neg \textit{Wrote}(\textit{Gershwin}, \textit{EleanorRigby})$
+
+\item The following assumes that a song can only have a single author:
+
+$\forall \; p_1, p_2, s \; \textit{Wrote}(p_1, s) \land \textit{Wrote}(p_2, s) \Rightarrow p_1 = p_2$\\
+$\textit{Wrote}(\textit{Gershwin}, \textit{TheManILove}) \lor \textit{Wrote}(\textit{McCartney}, \textit{TheManILove})$
+
+\item
+$\exists \; s \; \textit{Wrote}(\textit{Joe}, s)$
+
+\item
+$\exists \; d \; \textit{CopyOf}(d, \textit{Revolver}) \land \textit{Owns}(\textit{Joe}, d)$
+
+\item
+$\forall \; s \; \textit{Sings}(\textit{McCartney}, s, \textit{Revolver}) \Rightarrow \textit{Wrote}(\textit{McCartney}, s)$
+
+\item
+$\forall \; p, s \; \textit{Sings}(p, s, \textit{Revolver}) \Rightarrow \neg \textit{Wrote}(\textit{Gershwin}, s)$
+
+\item
+$\forall \; s \; \textit{Wrote}(\textit{Gershwin}, s) \Rightarrow \exists \; p, a \; \textit{Sings}(p, s, a)$
+
+\item
+$\exists \; a \; \forall \; p, s \; \textit{Wrote}(\textit{Joe}, s) \Rightarrow \textit{Sings}(p, s, a)$
+
+\item
+$\exists \; d, a \; \textit{Owns}(\textit{Joe}, d) \land \textit{CopyOf}(d, a) \land \textit{Sings}(\textit{BHoliday}, \textit{TheManILove}, a)$
+
+\item
+$\forall \; a, s \; \textit{Sings}(\textit{McCartney}, s, a) \Rightarrow \exists \; d \; \textit{CopyOf}(d, a) \land \textit{Owns}(\textit{Joe}, d)$
+
+\item
+$\forall \; a \; \neg \exists \; s \; \neg \textit{Sings}(\textit{BHoliday}, s, a) \Rightarrow \exists \; d \; \textit{CopyOf}(d, a) \land \textit{Owns}(\textit{Joe}, d)$
+
+\end{enumerate}
+
+\item \textbf{AIMA Exercise 8.20 -- ``Arithmetic assertions can be written\ldots''.}
+
+Infix notation is used for the predicate symbol $<$ and the function symbols $+$ and $\times$. The notation marker $|$ is used as a separator to indicate ``such that''.
+
+\begin{enumerate}
+
+\item 
+$\forall \; x \; \textit{IsEven}(x) \Leftrightarrow \exists \; y \; | \; \neg (x < x + y) \land \neg (x + y < x)$
+
+\item
+$\forall \; x \; \textit{IsPrime}(x) \Leftrightarrow \neg \exists \; y, z \; | \; \neg (x < y \times z) \land \neg (y \times z < x)$
+
+\item
+$\forall \; x \; \textit{IsEven(x)} \Rightarrow \exists \; y, z \; | \; \textit{IsPrime}(y) \land \textit{IsPrime}(z) \land \neg (x < y + z) \land \neg (y + z < x)$
+
+\end{enumerate}
+
+\item \textbf{AIMA Exercise 8.22 -- ``Write in first-order logic the assertion\ldots''.}
+
+$\Big(\forall \; k \; | \; \textit{Key}(k) \Rightarrow \exists \; t_k \; \textit{Before}(\textit{Now}, t_k) \land \textit{Lost}(k, t_k) \Big) \land$\\
+$\Big(\forall \; s_1, s_2 \; | \; \textit{Sock}(s_1) \land \textit{Sock}(s_2) \land \textit{Pair}(s_1, s_2) \Rightarrow \exists \; t_s \; | \; \textit{Before}(\textit{Now}, t_s) \land (\textit{Lost}(s_1, t_s) \lor \textit{Lost}(s_2, t_s))\Big)$
+
+\item \textbf{Translate into first-order logic the sentence ``Everyone's DNA is unique and is derived from their parents' DNA.'' You must specify the precise intended meaning of your vocabulary terms.}
+
+\begin{itemize}
+\item \textit{Person} is a unary predicate which is true if the referred object is a person.
+\item \textit{MotherOf} is a unary function mapping from a person object to the object representing the person's mother.
+\item \textit{FatherOf} is a unary function mapping from a person object to the object representing the person's father.
+\item \textit{D{\footnotesize NA}Of\thinspace} is a unary function mapping from a person object to the object representing the DNA of the person.
+\end{itemize}
+
+Everyone's DNA is unique:
+\begin{displaymath}
+\forall \; p_1, p_2 \; | \; \textit{Person}(p_1) \land \textit{Person}(p_2) \land (p_1 \neq p_2) \Rightarrow \textit{D{\footnotesize NA}Of\thinspace}(p_1) \neq \textit{D{\footnotesize NA}Of\thinspace}(p_2)
+\end{displaymath}
+
+Everyone's DNA is derived from their parent's DNA:
+\begin{displaymath}
+\forall \; p \; | \textit{Person}(p) \Rightarrow \Bigg(\textit{D{\footnotesize NA}Of\thinspace}(p) = \textit{D{\footnotesize NA}Combine\thinspace}\Big(\textit{D{\footnotesize NA}Of\thinspace}\big(\textit{MotherOf\thinspace}(p)\big), \textit{D{\footnotesize NA}Of\thinspace}\big(\textit{FatherOf\thinspace}(p)\big)\Big)\Bigg)
+\end{displaymath}
 
 \end{enumerate}
 
