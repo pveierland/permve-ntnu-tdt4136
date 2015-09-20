@@ -604,6 +604,7 @@ $\Big(\forall \; s_1, s_2 \; | \; \textit{Sock}(s_1) \land \textit{Sock}(s_2) \l
 \item \textit{MotherOf} is a unary function mapping from a person object to the object representing the person's mother.
 \item \textit{FatherOf} is a unary function mapping from a person object to the object representing the person's father.
 \item \textit{D{\footnotesize NA}Of\thinspace} is a unary function mapping from a person object to the object representing the DNA of the person.
+\item \textit{D{\footnotesize NA}Combine\thinspace} is a binary function mapping from two DNA objects to the DNA object representing the combination of the two DNA objects.
 \end{itemize}
 
 Everyone's DNA is unique:
@@ -615,6 +616,45 @@ Everyone's DNA is derived from their parent's DNA:
 \begin{displaymath}
 \forall \; p \; | \textit{Person}(p) \Rightarrow \Bigg(\textit{D{\footnotesize NA}Of\thinspace}(p) = \textit{D{\footnotesize NA}Combine\thinspace}\Big(\textit{D{\footnotesize NA}Of\thinspace}\big(\textit{MotherOf\thinspace}(p)\big), \textit{D{\footnotesize NA}Of\thinspace}\big(\textit{FatherOf\thinspace}(p)\big)\Big)\Bigg)
 \end{displaymath}
+
+\end{enumerate}
+
+\section{Resolution in First-Order Logic}
+
+\begin{enumerate}
+
+\item \textbf{Find the unifier ($\theta$) -- if possible -- for each pair of atomic sentences. \textit{Ocean}, \textit{Surrounds} and \textit{Includes} are predicates, while \textit{CapitalOf} is a function that maps a country to the name of its capital.}
+
+\begin{enumerate}
+\item
+$\theta = \textsc{Unify}\big(\textit{Ocean}(x), \textit{Ocean}(\textit{Atlantic})\big) = \{x / \textit{Atlantic}\}$
+
+\item
+$\theta = \textsc{Unify}\big(\textit{Surrounds}(\textit{Pacific}, \textit{Hawaii}), \textit{Surrounds}(x, \textit{Hawaii})\big) = \{x / \textit{Pacific}\}$
+
+\item
+$\theta = \textsc{Unify}\big(\textit{Surrounds}(x, \textit{Iceland}), \textit{Surrounds}(\textit{Atlantic}, y)\big) = \{x / \textit{Atlantic}, y / \textit{Iceland}\}$
+
+\item
+$\theta = \textsc{Unify}\big(\textit{Surrounds}(x, \textit{Iceland}), \textit{Surrounds}(\textit{Atlantic}, x)\big) = \textit{fail}$
+
+The conflicting use of the variable $x$ means that there exists no substitution which can unify the two sentence.
+
+\item
+$\theta = \textsc{Unify}\big(\textit{Includes}(x, y), \textit{Includes}(\textit{Iceland}, \textit{Reykjavik})\big) = \{x / \textit{Iceland}, y / \textit{Reykjavik}\}$
+
+\item
+$\theta = \textsc{Unify}\big(\textit{CapitalOf}(x), \textit{CapitalOf}(\textit{Iceland})\big) = \{x, \textit{Iceland}\}$
+
+\item
+$\theta = \textsc{Unify}\big(\textit{Includes}(\textit{Iceland}, y), \textit{Includes}(x, \textit{CapitalOf}(x))\big) = \{x / \textit{Iceland}, y / \textit{CapitalOf}(\textit{Iceland})\}$
+
+\item
+$\theta = \textsc{Unify}\big(\textit{Surrounds}(\textit{Atlantic}, x), \textit{Includes}(y, \textit{Iceland})\big) = \textit{fail}$
+
+The sentences cannot be unified as the operators \textit{Surrounds} and \textit{Includes} in the two compound expressions do not match.
+
+\end{enumerate}
 
 \end{enumerate}
 
