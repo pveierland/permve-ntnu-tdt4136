@@ -597,9 +597,11 @@ $\forall \; x \; \Big[ \textit{Even(x)} \Rightarrow \exists \; y, z \; \big[ \te
 
 \item \textbf{AIMA Exercise 8.22 -- ``Write in first-order logic the assertion\ldots''.}
 
-$\Bigg[ \forall \; k \; \textit{Key}(k) \Rightarrow \Big[ \exists \; t_k \; \textit{Before}(\textit{Now}, t_k) \land \big[ \forall \; t \; \neg (\textit{Before}(t, t_k) \Leftrightarrow \textit{Lost}(k, t)) \big] \Big] \Bigg] \land$
+$\Bigg[ \forall \; k \; \textit{Key}(k) \Rightarrow \Big[ \exists \; t_k \; \textit{Before}(\textit{Now}, t_k) \land \big[ \forall \; t \; \textit{Before}(t_k, t) \Rightarrow \textit{Lost}(k, t) \big] \Big] \Bigg] \land$
 
-$\Big(\forall \; s_1, s_2 \; | \; \textit{Sock}(s_1) \land \textit{Sock}(s_2) \land \textit{Pair}(s_1, s_2) \Rightarrow \exists \; t_s \; | \; \textit{Before}(\textit{Now}, t_s) \land (\textit{Lost}(s_1, t_s) \lor \textit{Lost}(s_2, t_s))\Big)$
+$\Bigg[\forall \; s_1, s_2 \; \textit{Sock}(s_1) \land \textit{Sock}(s_2) \land \textit{Pair}(s_1, s_2) \Rightarrow$\\
+$\big[\exists \; t_{s1} \; \textit{Before}(\textit{Now}, t_{s1}) \land \forall \; t \; \textit{Before}(t_{s1}, t) \Rightarrow \textit{Lost}(s_1, t)\big] \lor$\\
+$\big[\exists \; t_{s2} \; \textit{Before}(\textit{Now}, t_{s2}) \land \forall \; t \; \textit{Before}(t_{s2}, t) \Rightarrow \textit{Lost}(s_2, t)\big]\Bigg]$
 
 \item \textbf{Translate into first-order logic the sentence ``Everyone's DNA is unique and is derived from their parents' DNA.'' You must specify the precise intended meaning of your vocabulary terms.}
 
@@ -659,6 +661,67 @@ $\theta = \textsc{Unify}\big(\textit{Surrounds}(\textit{Atlantic}, x), \textit{I
 The sentences cannot be unified as the operators \textit{Surrounds} and \textit{Includes} in the two compound expressions do not match.
 
 \end{enumerate}
+
+\item \textbf{Use resolution to prove \textit{Green}(\textit{Linn}).}
+
+The fact that \textit{Linn} is \textit{Green} is proved by contradiction using resolution by showing that the sentence $\neg \textit{Green}(\textit{Linn})$ is unsatisfiable given the knowledge base. 
+
+Each sentence is first converted to CNF:
+
+\begin{itemize}
+\item
+$\textit{Hybrid}(\textit{Prius})$
+
+\item
+$\textit{Drives}(\textit{Linn}, \textit{Prius})$
+
+\item
+$ \forall \; x \; \textit{Green}(x) \Leftrightarrow \textit{Bikes}(x) \lor \big[ \exists \; y \; \textit{Drives}(x, y) \land \textit{Hybrid}(y) \big]$\\[1ex]
+$\forall \; x \; \big(\textit{Green}(x) \Rightarrow \textit{Bikes}(x) \lor \big[ \exists \; y \; \textit{Drives}(x, y) \land \textit{Hybrid}(y) \big] \big) \land$\\
+$\big(\textit{Bikes}(x) \lor \big[ \exists \; y \; \textit{Drives}(x, y) \land \textit{Hybrid}(y) \big] \Rightarrow \textit{Green}(x) \big)$\\[1ex]
+$\forall \; x \; \big(\neg \textit{Green}(x) \lor \textit{Bikes}(x) \lor \big[ \exists \; y \; \textit{Drives}(x, y) \land \textit{Hybrid}(y) \big] \big) \land$\\
+$\big(\neg \big( \textit{Bikes}(x) \lor \big[ \exists \; y \; \textit{Drives}(x, y) \land \textit{Hybrid}(y) \big] \big) \lor \textit{Green}(x) \big)$\\[1ex]
+$\forall \; x \; \big(\neg \textit{Green}(x) \lor \textit{Bikes}(x) \lor \big[ \exists \; y \; \textit{Drives}(x, y) \land \textit{Hybrid}(y) \big] \big) \land $\\
+$\big(\big( \neg \textit{Bikes}(x) \land  \neg \big[ \exists \; y \; \textit{Drives}(x, y) \land \textit{Hybrid}(y) \big] \big) \lor \textit{Green}(x) \big)$\\[1ex]
+$\forall \; x \; \big(\neg \textit{Green}(x) \lor \textit{Bikes}(x) \lor \big[ \exists \; y \; \textit{Drives}(x, y) \land \textit{Hybrid}(y) \big] \big) \land$\\
+$\big(\big( \neg \textit{Bikes}(x) \land  \big[ \forall \; y \; \neg \big( \textit{Drives}(x, y) \land \textit{Hybrid}(y) \big) \big] \big) \lor \textit{Green}(x) \big)$\\[1ex]
+$\forall \; x \; \big(\neg \textit{Green}(x) \lor \textit{Bikes}(x) \lor \big[ \exists \; y \; \textit{Drives}(x, y) \land \textit{Hybrid}(y) \big] \big) \land$\\
+$\big(\big( \neg \textit{Bikes}(x) \land  \big[ \forall \; y \; \neg \textit{Drives}(x, y) \lor \neg \textit{Hybrid}(y) \big] \big) \lor \textit{Green}(x) \big)$\\[1ex]
+$\forall \; x \; \big(\neg \textit{Green}(x) \lor \textit{Bikes}(x) \lor \big[ \exists \; y \; \textit{Drives}(x, y) \land \textit{Hybrid}(y) \big] \big) \land$\\
+$\big(\big( \neg \textit{Bikes}(x) \land  \big[ \forall \; z \; \neg \textit{Drives}(x, z) \lor \neg \textit{Hybrid}(z) \big] \big) \lor \textit{Green}(x) \big)$\\[1ex]
+$\big(\neg \textit{Green}(x) \lor \textit{Bikes}(x) \lor \big[ \textit{Drives}(x, C(x)) \land \textit{Hybrid}(C(x)) \big] \big) \land$\\
+$\big(\big( \neg \textit{Bikes}(x) \land  \big[ \neg \textit{Drives}(x, z) \lor \neg \textit{Hybrid}(z) \big] \big) \lor \textit{Green}(x) \big)$\\[1ex]
+$\big(\neg \textit{Green}(x) \lor \textit{Bikes}(x) \lor \textit{Drives}(x, C(x)) \big) \land \big(\neg \textit{Green}(x) \lor \textit{Bikes}(x) \lor \textit{Hybrid}(C(x)) \big) \land$\\
+$\big( \neg \textit{Bikes}(x) \lor \textit{Green}(x) \big) \land \big( \neg \textit{Drives}(x, z) \lor \neg \textit{Hybrid}(z) \lor \textit{Green}(x) \big)$
+
+\item
+$\neg \textit{Green}(\textit{Linn})$
+
+\end{itemize}
+
+The relevant applications of the resolution rule is shown below:
+
+\begin{itemize}
+\item
+Clause 1: $\neg \textit{Drives}(x, z) \lor \neg \textit{Hybrid}(z) \lor \neg \textit{Green}(x)$\\
+Clause 2: $\textit{Hybrid}(\textit{Prius})$\\
+Unifier: $\{z / \textit{Prius}\}$\\
+Resolvent: $\neg \textit{Drives}(x, \textit{Prius}) \lor \textit{Green}(x) $
+
+\item
+Clause 1: $\neg \textit{Drives}(x, \textit{Prius}) \lor \textit{Green}(x)$\\
+Clause 2: $\textit{Drives}(\textit{Linn}, \textit{Prius})$\\
+Unifier: $\{ x / \textit{Linn} \}$\\
+Resolvent: $\textit{Green}(\textit{Linn})$
+
+\item
+Clause 1: $\textit{Green}(\textit{Linn})$\\
+Clause 2: $\neg \textit{Green}(\textit{Linn})$\\
+Unifier: $\{\}$\\
+Resolvent: $\{\}$
+\end{itemize}
+
+Since the resolution is able to produce an empty clause the contradiction is proven, and the sentence $\textit{Green}(\textit{Linn})$ must be entailed by the knowledge base.
 
 \end{enumerate}
 
