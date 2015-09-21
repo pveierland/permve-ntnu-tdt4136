@@ -541,60 +541,64 @@ $\textit{Wrote}(\textit{Gershwin}, \textit{TheManILove})$
 \item
 $\neg \textit{Wrote}(\textit{Gershwin}, \textit{EleanorRigby})$
 
-\item The following assumes that a song can only have a single author:
-
-$\forall \; p_1, p_2, s \; \textit{Wrote}(p_1, s) \land \textit{Wrote}(p_2, s) \Rightarrow p_1 = p_2$\\
-$\textit{Wrote}(\textit{Gershwin}, \textit{TheManILove}) \lor \textit{Wrote}(\textit{McCartney}, \textit{TheManILove})$
+\item
+$(\textit{Wrote}(\textit{Gershwin}, \textit{TheManILove}) \land \neg \textit{Wrote}(\textit{McCartney}, \textit{TheManILove})) \lor$\\
+$(\neg \textit{Wrote}(\textit{Gershwin}, \textit{TheManILove}) \land \textit{Wrote}(\textit{McCartney}, \textit{TheManILove}))$
 
 \item
 $\exists \; s \; \textit{Wrote}(\textit{Joe}, s)$
 
 \item
-$\exists \; d \; \textit{CopyOf}(d, \textit{Revolver}) \land \textit{Owns}(\textit{Joe}, d)$
+$\exists \; d \; \big[ \textit{CopyOf}(d, \textit{Revolver}) \land \textit{Owns}(\textit{Joe}, d) \big]$
 
 \item
-$\forall \; s \; \textit{Sings}(\textit{McCartney}, s, \textit{Revolver}) \Rightarrow \textit{Wrote}(\textit{McCartney}, s)$
+$\forall \; s \; \big[ \textit{Sings}(\textit{McCartney}, s, \textit{Revolver}) \Rightarrow \textit{Wrote}(\textit{McCartney}, s) \big]$
 
 \item
-$\forall \; p, s \; \textit{Sings}(p, s, \textit{Revolver}) \Rightarrow \neg \textit{Wrote}(\textit{Gershwin}, s)$
+$\forall \; p, s \; \big[ \textit{Sings}(p, s, \textit{Revolver}) \Rightarrow \neg \textit{Wrote}(\textit{Gershwin}, s) \big]$
 
 \item
-$\forall \; s \; \textit{Wrote}(\textit{Gershwin}, s) \Rightarrow \exists \; p, a \; \textit{Sings}(p, s, a)$
+$\forall \; s \; \big[ \textit{Wrote}(\textit{Gershwin}, s) \Rightarrow \exists \; p, a \; \textit{Sings}(p, s, a) \big]$
 
 \item
-$\exists \; a \; \forall \; p, s \; \textit{Wrote}(\textit{Joe}, s) \Rightarrow \textit{Sings}(p, s, a)$
+$\exists \; a \; \forall \; s \; \big [\textit{Wrote}(\textit{Joe}, s) \Rightarrow \exists \; p \; \textit{Sings}(p, s, a) \big]$
 
 \item
-$\exists \; d, a \; \textit{Owns}(\textit{Joe}, d) \land \textit{CopyOf}(d, a) \land \textit{Sings}(\textit{BHoliday}, \textit{TheManILove}, a)$
+$\exists \; d, a \; \big[ \textit{Owns}(\textit{Joe}, d) \land \textit{CopyOf}(d, a) \land \textit{Sings}(\textit{BHoliday}, \textit{TheManILove}, a) \big]$
 
 \item
-$\forall \; a, s \; \textit{Sings}(\textit{McCartney}, s, a) \Rightarrow \exists \; d \; \textit{CopyOf}(d, a) \land \textit{Owns}(\textit{Joe}, d)$
+$\forall \; a \; \big[ \exists \; s \; \textit{Sings}(\textit{McCartney}, s, a) \big] \Rightarrow \big[ \exists \; d \; \textit{CopyOf}(d, a) \land \textit{Owns}(\textit{Joe}, d) \big]$
 
 \item
-$\forall \; a \; \neg \exists \; s \; \neg \textit{Sings}(\textit{BHoliday}, s, a) \Rightarrow \exists \; d \; \textit{CopyOf}(d, a) \land \textit{Owns}(\textit{Joe}, d)$
+$\forall \; a \; \big[ \forall \; s \; \textit{Sings}(\textit{BHoliday}, s, a) \big] \Rightarrow \big[ \exists \; d \; \textit{CopyOf}(d, a) \land \textit{Owns}(\textit{Joe}, d) \big]$
 
 \end{enumerate}
 
 \item \textbf{AIMA Exercise 8.20 -- ``Arithmetic assertions can be written\ldots''.}
 
-Infix notation is used for the predicate symbol $<$ and the function symbols $+$ and $\times$. The notation marker $|$ is used as a separator to indicate ``such that''.
+\begin{displaymath}
+\forall \; x, y \; \Big[ \textit{Equals}(x, y) \Leftrightarrow \big[ \neg (x < y) \land \neg (y < x) \big] \Big]
+\end{displaymath}
+
+Infix notation is used for the predicate symbol $<$ and the function symbols $+$ and $\times$. An \textit{Equals} predicate is built from the predicate symbol $<$. Only non-negative numbers are assumed to exist. 
 
 \begin{enumerate}
 
 \item 
-$\forall \; x \; \textit{IsEven}(x) \Leftrightarrow \exists \; y \; | \; \neg (x < x + y) \land \neg (x + y < x)$
+$\forall \; x \; \Big[ \textit{Even}(x) \Leftrightarrow \exists \; y \; \big[ \textit{Equals}(x, y + y) \big] \Big]$
 
 \item
-$\forall \; x \; \textit{IsPrime}(x) \Leftrightarrow \neg \exists \; y, z \; | \; \neg (x < y \times z) \land \neg (y \times z < x)$
+$\forall \; x \; \Big[ \textit{Prime}(x) \Leftrightarrow \neg \exists \; y, z \; \big[ \neg \textit{Equals}(y, 1) \land \neg \textit{Equals}(z, 1) \land \textit{Equals}(x,~y~\times~z) \big] \Big]$
 
 \item
-$\forall \; x \; \textit{IsEven(x)} \Rightarrow \exists \; y, z \; | \; \textit{IsPrime}(y) \land \textit{IsPrime}(z) \land \neg (x < y + z) \land \neg (y + z < x)$
+$\forall \; x \; \Big[ \textit{Even(x)} \Rightarrow \exists \; y, z \; \big[ \textit{Prime}(y) \land \textit{Prime}(z) \land \textit{Equals}(x, y + z) \big] \Big]$
 
 \end{enumerate}
 
 \item \textbf{AIMA Exercise 8.22 -- ``Write in first-order logic the assertion\ldots''.}
 
-$\Big(\forall \; k \; | \; \textit{Key}(k) \Rightarrow \exists \; t_k \; \textit{Before}(\textit{Now}, t_k) \land \textit{Lost}(k, t_k) \Big) \land$\\
+$\Bigg[ \forall \; k \; \textit{Key}(k) \Rightarrow \Big[ \exists \; t_k \; \textit{Before}(\textit{Now}, t_k) \land \big[ \forall \; t \; \neg (\textit{Before}(t, t_k) \Leftrightarrow \textit{Lost}(k, t)) \big] \Big] \Bigg] \land$
+
 $\Big(\forall \; s_1, s_2 \; | \; \textit{Sock}(s_1) \land \textit{Sock}(s_2) \land \textit{Pair}(s_1, s_2) \Rightarrow \exists \; t_s \; | \; \textit{Before}(\textit{Now}, t_s) \land (\textit{Lost}(s_1, t_s) \lor \textit{Lost}(s_2, t_s))\Big)$
 
 \item \textbf{Translate into first-order logic the sentence ``Everyone's DNA is unique and is derived from their parents' DNA.'' You must specify the precise intended meaning of your vocabulary terms.}
