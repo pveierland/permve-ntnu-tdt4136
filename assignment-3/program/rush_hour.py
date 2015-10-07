@@ -1,12 +1,15 @@
 #!/usr/bin/python
 
+import copy
 import enum
 import re
 import sys
 
-import vi.grid
+from vi.search.graph import BestFirst, Node, Successor
+from vi.search.grid import Action
+from vi.grid import Coordinate, Rectangle
 
-class Vehicle(object):
+class Vehicle(Rectangle):
     class Orientation(enum.Enum):
         horizontal = 0
         vertical   = 1
@@ -16,77 +19,129 @@ class Vehicle(object):
         parts = map(int, list(x for x in re.split('[(,)]', text.strip()) if x))
         return Vehicle(
             Vehicle.Orientation(parts[0]),
-            vi.grid.Coordinate(parts[1], parts[2]),
+            Coordinate(parts[1], parts[2]),
             parts[3])
 
     def __init__(self, orientation, coordinate, size):
+        super(Vehicle, self).__init__(
+            coordinate.x,
+            coordinate.y,
+            size if orientation is Vehicle.Orientation.horizontal else 1,
+            size if orientation is Vehicle.Orientation.vertical else 1)
+
         self.orientation = orientation
-        self.coordinate  = coordinate
-        self.size        = size
 
     def __str__(self):
-        return 'Vehicle(orientation={0},coordinate={1},size={2}'.format(
-            self.orientation, self.coordinate, self.size)
-    
-    def distance_from_coordinate(self, coordinate):
-        if self.orientation is self.Orientation.horizontal:
-            diff_y = abs(self.coordinate.y - coordinate.y)
-            diff_x = min(abs(self.coordinate.x - coordinate.x),
-                         abs(self.coordinate.x + self.size - 1 - coordinate.x))
-        elif self.orientation is self.Orientation.vertical:
-            diff_x = abs(self.coordinate.x - coordinate.x)
-            diff_y = min(abs(self.coordinate.y - coordinate.y),
-                         abs(self.coordinate.y + self.size - 1 - coordinate.y))
-
-        return diff_y + diff_x
-    
-    def intersects_coordinate(self, coordinate):
-        if self.orientation is self.Orientation.horizontal:
-            return (self.coordinate.y == coordinate.y) and \
-                   (self.coordinate.x <= coordinate.x) and \
-                   (coordinate.x < self.coordinate.x + self.size)
-        else:
-            return (self.coordinate.x == coordinate.x) and \
-                   (self.coordinate.y <= coordinate.y) and \
-                   (coordinate.y < self.coordinate.y + self.size)
+        return 'Vehicle({0},orientation={1})'.format(
+            super(Vehicle, self).__str__(),
+            self.orientation)
 
 class Problem(object):
-    def __init__(self, vehicles, goal):
-        self.vehicles = vehicles
-        self.goal     = goal
+    def __init__(self, vehicles, dimensions, goal):
+        self.vehicles   = vehicles
+        self.dimensions = dimensions
+        self.goal       = goal
 
     def goal_test(self, state):
-        return self.vehicles[0].intersects(self.goal)
+        return state[0].intersects_coordinate(self.goal)
 
     def heuristic(self, state):
-        # Use Manhattan heuristic:
-        return abs(self.goal.x - state.x) + abs(self.goal.y - state.y)
+        h = 0
+        for vehicle in state[1:]:
+            if vehicle.orientation is Vehicle.Orientation.vertical and \
+               vehicle.x >= state[0].x and \
+               vehicle.intersects_coordinate(Coordinate(vehicle.x, state[0].y)):
+                h = h + min(state[0].y - vehicle.y, \
+                            vehicle.y + vehicle.height - state[0].y)
+
+        #return h + sum(self.vehicles[0].distance_to_coordinate(self.goal))
+        return sum(self.vehicles[0].distance_to_coordinate(self.goal))
 
     def initial_node(self):
-        return Node(self.start)
-
-    def is_blocked(self, position):
-        return position.x < 0 or \
-               position.x >= self.grid.width or \
-               position.y < 0 or \
-               position.y >= self.grid.height or \
-               self.grid.values[position.y][position.x] == vi.grid.obstructed
+        return Node(self.vehicles)
 
     def successors(self, node):
-        for action in Action:
-            if action == Action.move_up:
-                successor_state = node.state.up()
-            elif action == Action.move_down:
-                successor_state = node.state.down()
-            elif action == Action.move_left:
-                successor_state = node.state.left()
-            elif action == Action.move_right:
-                successor_state = node.state.right()
+        def build_successor(action, vehicle_id, diff_x, diff_y):
+            successor_state     = copy.deepcopy(node.state)
 
-            if not self.is_blocked(successor_state):
-                yield Successor(self, node, successor_state, action, 1)
+            successor_vehicle   = successor_state[vehicle_id]
+            successor_vehicle.x = successor_vehicle.x + diff_x
+            successor_vehicle.y = successor_vehicle.y + diff_y
 
-with open(sys.argv[1], 'r') as f:
-    for line in f.readlines():
-        print(Vehicle.from_string(line))
+            return Successor(
+                self, node, successor_state, (action, vehicle_id, 1), 1)
+
+        for vehicle_id, vehicle in enumerate(node.state):
+            if vehicle.orientation is Vehicle.Orientation.horizontal:
+                if vehicle.x > 0 and \
+                   not any(other.intersects_coordinate(
+                               Coordinate(vehicle.x - 1, vehicle.y)) \
+                           for other in node.state \
+                           if other is not vehicle):
+
+                    yield build_successor(Action.move_left, vehicle_id, -1, 0)
+
+                if vehicle.x + vehicle.width < self.dimensions.x and \
+                   not any(other.intersects_coordinate( \
+                               Coordinate(vehicle.x + vehicle.width, vehicle.y)) \
+                           for other in node.state \
+                           if other is not vehicle):
+
+                    yield build_successor(Action.move_right, vehicle_id, +1, 0)
+
+            elif vehicle.orientation is Vehicle.Orientation.vertical:
+                if vehicle.y > 0 and \
+                   not any(other.intersects_coordinate( \
+                               Coordinate(vehicle.x, vehicle.y - 1)) \
+                           for other in node.state \
+                           if other is not vehicle):
+
+                    yield build_successor(Action.move_up, vehicle_id, 0, -1)
+
+                if vehicle.y + vehicle.height < self.dimensions.y and \
+                   not any(other.intersects_coordinate( \
+                               Coordinate(vehicle.x, vehicle.y + vehicle.height)) \
+                           for other in node.state \
+                           if other is not vehicle):
+
+                    yield build_successor(Action.move_down, vehicle_id, 0, +1)
+
+def print_solution(solution):
+    i = 1
+    while i < len(solution.path):
+        action, state = solution.path[i]
+        num_moves = action[2]
+
+        j = i + 1
+        while j < len(solution.path):
+            if action[0] == solution.path[j][0][0] and \
+               action[1] == solution.path[j][0][1]:
+                num_moves = num_moves + 1
+                j = j + 1
+            else:
+                break
+        i = j
+
+        print('Move Vehicle#{0} {1} {2} step{3}'.format(
+            action[1],
+            str(action[0]).split('_')[1],
+            num_moves,
+            's' if num_moves > 1 else ''))
+
+with open(sys.argv[1]) as f:
+    vehicles = tuple(Vehicle.from_string(line) for line in f.readlines())
+
+problem = Problem(vehicles, Coordinate(6, 6), Coordinate(5, 2))
+search  = BestFirst(problem, BestFirst.Strategy.astar)
+solution = search.search()
+
+print("heuristic 1")
+print(search.state)
+print("open = {0} closed = {1} total = {2}".format(
+    len(list(search.open_list())),
+    len(list(search.closed_list())),
+    len(list(search.open_list())) + len(list(search.closed_list()))))
+
+print_solution(solution)
+
 
