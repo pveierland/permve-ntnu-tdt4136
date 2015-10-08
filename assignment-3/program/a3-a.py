@@ -71,7 +71,7 @@ def render(painter, colors, sizes, problem, search, solution):
 
     for node in search.open_list():
         if node.state not in symbols:
-            symbols[node.state] = u'\u2606'
+            symbols[node.state] = u'\u2605'
 
     for node in search.closed_list():
         if node.state not in symbols:
