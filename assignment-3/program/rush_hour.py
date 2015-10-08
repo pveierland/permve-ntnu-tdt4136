@@ -4,6 +4,7 @@ import copy
 import enum
 import re
 import sys
+import types
 
 from vi.search.graph import BestFirst, Node, Successor
 from vi.search.grid import Action
@@ -45,24 +46,12 @@ class Problem(object):
     def goal_test(self, state):
         return state[0].intersects_coordinate(self.goal)
 
-    def heuristic(self, state):
-        h = 0
-        for vehicle in state[1:]:
-            if vehicle.orientation is Vehicle.Orientation.vertical and \
-               vehicle.x >= state[0].x and \
-               vehicle.intersects_coordinate(Coordinate(vehicle.x, state[0].y)):
-                h = h + min(state[0].y - vehicle.y, \
-                            vehicle.y + vehicle.height - state[0].y)
-
-        #return h + sum(self.vehicles[0].distance_to_coordinate(self.goal))
-        return sum(self.vehicles[0].distance_to_coordinate(self.goal))
-
     def initial_node(self):
         return Node(self.vehicles)
 
     def successors(self, node):
         def build_successor(action, vehicle_id, diff_x, diff_y):
-            successor_state     = copy.deepcopy(node.state)
+            successor_state = copy.deepcopy(node.state)
 
             successor_vehicle   = successor_state[vehicle_id]
             successor_vehicle.x = successor_vehicle.x + diff_x
@@ -106,11 +95,19 @@ class Problem(object):
 
                     yield build_successor(Action.move_down, vehicle_id, 0, +1)
 
+def print_stats(search):
+    print("open = {0} closed = {1} total = {2} solution length = {3}".format(
+        len(list(search.open_list())),
+        len(list(search.closed_list())),
+        len(list(search.open_list())) + len(list(search.closed_list())),
+        search.info[1].cost))
+
 def print_solution(solution):
     i = 1
     while i < len(solution.path):
         action, state = solution.path[i]
-        num_moves = action[2]
+        start_move = i
+        num_moves  = action[2]
 
         j = i + 1
         while j < len(solution.path):
@@ -122,26 +119,47 @@ def print_solution(solution):
                 break
         i = j
 
-        print('Move Vehicle#{0} {1} {2} step{3}'.format(
+        print('\\textbf{{Step{4} {0}:}} & Move vehicle \\#{1} {2} {3} step{4} \\\\'.format(
+            '{0}-{1}'.format(start_move, start_move + num_moves - 1) if num_moves > 1 else '{0}'.format(start_move),
             action[1],
             str(action[0]).split('_')[1],
             num_moves,
             's' if num_moves > 1 else ''))
 
+def heuristic1(self, state):
+    return sum(state[0].distance_to_coordinate(self.goal))
+
+def heuristic2(self, state):
+    h = 0
+    for vehicle in state[1:]:
+        if vehicle.orientation is Vehicle.Orientation.vertical and \
+           vehicle.x >= state[0].x and \
+           vehicle.intersects_coordinate(Coordinate(vehicle.x, state[0].y)):
+            h = h + 1
+    return h + sum(state[0].distance_to_coordinate(self.goal))
+
 with open(sys.argv[1]) as f:
     vehicles = tuple(Vehicle.from_string(line) for line in f.readlines())
 
 problem = Problem(vehicles, Coordinate(6, 6), Coordinate(5, 2))
-search  = BestFirst(problem, BestFirst.Strategy.astar)
-solution = search.search()
 
-print("heuristic 1")
-print(search.state)
-print("open = {0} closed = {1} total = {2}".format(
-    len(list(search.open_list())),
-    len(list(search.closed_list())),
-    len(list(search.open_list())) + len(list(search.closed_list()))))
+print('no heuristic')
+search = BestFirst(problem, BestFirst.Strategy.astar)
+solution = search.search()
+print_stats(search)
+
+print('heuristic 1')
+search = BestFirst(problem, BestFirst.Strategy.astar)
+problem.heuristic = heuristic1
+problem.heuristic = types.MethodType(heuristic1, problem)
+solution = search.search()
+print_stats(search)
+
+print('heuristic 2')
+search = BestFirst(problem, BestFirst.Strategy.astar)
+problem.heuristic = types.MethodType(heuristic2, problem)
+solution = search.search()
+print_stats(search)
 
 print_solution(solution)
-
 
