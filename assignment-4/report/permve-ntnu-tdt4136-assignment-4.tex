@@ -1,0 +1,49 @@
+\input{../../../permve-ntnu-latex/assignment.tex}
+
+\usepackage{float}
+\usepackage{pgfplots, pgfplotstable}
+\usepackage{filecontents}
+
+\title{	
+\normalfont \normalsize 
+\textsc{Norwegian University of Science and Technology\\TDT4136 -- Introduction to Artificial Intelligence} \\ [25pt]
+\horrule{0.5pt} \\[0.4cm]
+\huge Assignment 4:\\ Simulated Annealing\\
+\horrule{2pt} \\[0.5cm]
+}
+
+\author{Per Magnus Veierland\\permve@stud.ntnu.no}
+
+\date{\normalsize\today}
+
+\begin{document}
+
+\maketitle
+
+\newcommand{\showhistogram}[1]{
+\begin{tikzpicture}
+\begin{axis}[
+ybar,
+ymin=0,
+ymax=50
+]
+\addplot +[
+hist={
+bins=10,
+data min=1,
+data max=10
+}
+] table [y index=0] {data/#1};
+\end{axis}
+\end{tikzpicture}
+}
+
+\begin{tabular}{cc}
+\showhistogram{egg-scenario-3-10-epochs.txt} &
+\showhistogram{egg-scenario-3-100-epochs.txt} \\
+\showhistogram{egg-scenario-3-1000-epochs.txt} &
+\showhistogram{egg-scenario-3-10000-epochs.txt} \\
+\end{tabular}
+
+\end{document}
+
