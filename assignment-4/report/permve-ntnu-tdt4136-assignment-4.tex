@@ -2,7 +2,6 @@
 
 \usepackage{float}
 \usepackage{pgfplots, pgfplotstable}
-\usepackage{filecontents}
 
 \title{	
 \normalfont \normalsize 
@@ -20,30 +19,33 @@
 
 \maketitle
 
-\newcommand{\showhistogram}[1]{
-\begin{tikzpicture}
-\begin{axis}[
-ybar,
-ymin=0,
-ymax=50
-]
-\addplot +[
-hist={
-bins=10,
-data min=1,
-data max=10
-}
-] table [y index=0] {data/#1};
-\end{axis}
-\end{tikzpicture}
+\newcommand{\showgg}[1]{
+    \begin{tikzpicture}[scale=0.7]
+    \begin{axis}[view={0}{90},
+        xlabel=Start Temperature,
+        ylabel=Temperature Delta Ratio,
+        colorbar,
+        colorbar style={
+            title=Value,
+            yticklabel style={
+                /pgf/number format/.cd,
+                fixed,
+                fixed zerofill
+            }
+        },
+        title=Egg Carton: Scenario #1 ]
+    \addplot3[surf] file {../data/egg-carton-params-scenario-#1.txt};
+    \end{axis}
+    \end{tikzpicture}
 }
 
+\begin{table}
+\centering
 \begin{tabular}{cc}
-\showhistogram{egg-scenario-3-10-epochs.txt} &
-\showhistogram{egg-scenario-3-100-epochs.txt} \\
-\showhistogram{egg-scenario-3-1000-epochs.txt} &
-\showhistogram{egg-scenario-3-10000-epochs.txt} \\
+\showgg{1} & \showgg{2} \\
+\showgg{3} & \showgg{4} \\
 \end{tabular}
+\end{table}
 
 \end{document}
 
