@@ -1,0 +1,98 @@
+\input{../../../permve-ntnu-latex/assignment.tex}
+
+\usepackage{float}
+\usepackage{subfig}
+
+\title{
+\normalfont \normalsize
+\textsc{Norwegian University of Science and Technology\\TDT4136 -- Introduction to Artificial Intelligence} \\ [25pt]
+\horrule{0.5pt} \\[0.2cm]
+\huge Assignment 5:\\ Solving Constraint Satisfaction Problems\\
+\horrule{2pt} \\[0.3cm]
+}
+
+\author{Per Magnus Veierland\\permve@stud.ntnu.no}
+
+\date{\normalsize\today}
+
+\newacro{CSP}{Constraint Satisfaction Problem}
+
+\begin{document}
+
+\maketitle
+
+\begin{enumerate}
+\item[1.] The \textit{Python} program \texttt{vi.app.sudoku} implements a \ac{CSP} solver based on the \textsc{Backtracking-Search} algorithm described in \textbf{AIMA} and implemented in the \texttt{vi.csp} namespace. It reuses a generalized \textsc{Revise} algorithm called \textsc{Revise*} and a generalized \textsc{AC-3} algorithm called \textsc{Generalized-Arc-Consistency} which were both developed for \textsc{IT3105}. The program can be run in two modes; binary or general. In binary mode the Sudoku puzzle input will be parsed and 972~binary arc constraints will be constructed for 81~variables (see Table~\ref{table:backtrack_binary}); while in general mode 27~general arc constraints will be constructed for 81~variables (see Table~\ref{table:backtrack_general}).
+
+\item[3.] In the easier puzzles there are no backtracking failures. This is likely because they have several valid solutions, which makes it more likely that early assumptions will be correct, and that the puzzle values are such that they allow for a rapid domain reduction for the non-fixed variables.
+
+With the harder puzzles there is a greater number of backtracking failures. This is likely because there are few valid solutions, and because the resulting constraints are not able to easily reduce the domain sizes. This makes it more likely that early assumptions will be incorrect such that the search fails later on, which results in backtracking.
+
+When using general arc constraints where each constraint involves a whole row, column or box; there are no backtracking failures. This is because the \textsc{Generalized-Arc-Consistency} algorithm is able to fully reduce all domains to unity in one application, meaning that all variables are sufficiently constrained such that the puzzle can be solved by pure inference.
+\end{enumerate}
+
+\newcommand{\sudokustatistics}[2]{
+    \IfFileExists{/home/pveierland/permve-ntnu-tdt4136/assignment-5/report/generated/#1#2.txt}{}{
+        \immediate\write18{
+            mkdir -p /home/pveierland/permve-ntnu-tdt4136/assignment-5/report/generated &&
+            /home/pveierland/permve-ntnu-it3105/vi/vi/app/sudoku/sudoku.py
+            /home/pveierland/permve-ntnu-tdt4136/assignment-5/input/#1.txt #2
+            > /home/pveierland/permve-ntnu-tdt4136/assignment-5/report/generated/#1#2.txt}}
+    \input{|"cat /home/pveierland/permve-ntnu-tdt4136/assignment-5/report/generated/"#1#2".txt"}}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{ccccc}
+\toprule
+Puzzle & Variables & Constraints & Backtrack Calls & Backtrack Failures \\
+\midrule
+\sudokustatistics{easy}{} \\
+\sudokustatistics{medium}{} \\
+\sudokustatistics{hard}{} \\
+\sudokustatistics{veryhard}{} \\
+\bottomrule
+\end{tabular}
+\caption{Sudoku \textsc{Backtracking-Search} with binary arc constraints.}
+\label{table:backtrack_binary}
+\end{table}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{ccccc}
+\toprule
+Puzzle & Variables & Constraints & Backtrack Calls & Backtrack Failures \\
+\midrule
+\sudokustatistics{easy}{--general} \\
+\sudokustatistics{medium}{--general} \\
+\sudokustatistics{hard}{--general} \\
+\sudokustatistics{veryhard}{--general} \\
+\bottomrule
+\end{tabular}
+\caption{Sudoku \textsc{Backtracking-Search} with general arc constraints.}
+\label{table:backtrack_general}
+\end{table}
+
+\newcommand{\sudokusolution}[1]{
+    \IfFileExists{/home/pveierland/permve-ntnu-tdt4136/assignment-5/report/generated/#1.pdf}{}{
+        \immediate\write18{
+            mkdir -p /home/pveierland/permve-ntnu-tdt4136/assignment-5/report/generated &&
+            /home/pveierland/permve-ntnu-it3105/vi/vi/app/sudoku/sudoku.py
+            /home/pveierland/permve-ntnu-tdt4136/assignment-5/input/#1.txt
+            --pdf /home/pveierland/permve-ntnu-tdt4136/assignment-5/report/generated/#1.pdf}}
+    \subfloat[\texttt{#1.txt}]{%
+        \includegraphics[width=0.34\textwidth]
+            {/home/pveierland/permve-ntnu-tdt4136/assignment-5/report/generated/#1.pdf}}}
+
+\begin{minipage}{\linewidth}
+\begin{figure}[H]
+\centering
+\sudokusolution{easy}\hspace{1em}
+\sudokusolution{medium}\\[1em]
+\sudokusolution{hard}\hspace{1em}
+\sudokusolution{veryhard} \\
+\caption{Sudoku solutions}
+\end{figure}
+\end{minipage}
+
+\end{document}
+
