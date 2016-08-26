@@ -1,7 +1,7 @@
-\input{../templates/assignment.tex}
+\input{permve-ntnu-latex-assignment.tex}
 
-\title{	
-\normalfont \normalsize 
+\title{
+\normalfont \normalsize
 \textsc{Norwegian University of Science and Technology\\TDT4136 -- Introduction to Artificial Intelligence} \\ [25pt]
 \horrule{0.5pt} \\[0.4cm]
 \huge Assignment 1:\\ A.I. Fundementals and Intelligence Agents\\
@@ -34,17 +34,17 @@
 \section*{Theoretical Questions}
 
 \begin{enumerate}
-\item \textbf{What is the Turing Test, and how is it conducted?}
+\item \textbf{What is the Turing Test, and how is it conducted?}\nopagebreak
 
-The Turing Test, originally introduced as ``The Imitation Game'' by Alan~M.~Turing in his paper ``Computing Machinery and Intelligence'' from 1950, describes an experiment intended to answer the question of whether machines can think. In the experiment, a machine; \textbf{A}, and a human; \textbf{B}, communicates textually with a human interrogator; \textbf{C}) Through conversation with both participants, the goal of the interrogator is to discern which participant is human, and which is the machine. The objective of the human participant is to help the interrogator conclude that it really is \textbf{B} that is human, while the machine participant is free to choose whichever strategy to convince the interrogator that \textbf{A} is the human.
+The Turing Test, originally introduced as ``The Imitation Game'' by Alan~M.~Turing in his paper ``Computing Machinery and Intelligence'' from 1950, describes an experiment to test whether a machine can act intelligently in a manner where it cannot be distinguished from a human. In the experiment, a machine and a human communicates textually with a human interrogator. The goal of both participants is to convince the interrogator that they are the human participant. Through conversation with both participants, the goal of the interrogator is to discern which participant is human, and which is the machine.
 
-No time limit was set for the experiment, but Turing estimated that a machine would by the year 2000 be able to play the game sufficiently well such that an average interrogator would not have more than a 70\% chance of correctly identifying the human participant after 5 minutes of playing. Turing did not describe a machine succeeding in the game as ``passing a test'', but described the experiment as a hypothetical and practical exercise to show that even if a machine might operate differently from a human, it can still be capable of thinking.
+No time limit was set for the experiment, but Turing estimated that a machine would by the year 2000 be able to play the game sufficiently well such that an average interrogator would not have more than a 70\% chance of correctly identifying the human participant after 5 minutes of play. Turing did not describe a machine succeeding in the game as ``passing a test'', but designed the experiment to replace the question ``Can machines think?'' with a challenge demonstrating intelligent thought.
 
-\item \textbf{What is the relationship between thinking rationally and acting rationally? Is rational thinking an absolute condition for acting rationally?}
+\item \textbf{What is the relationship between thinking rationally and acting rationally? Is rational thinking an absolute condition for acting rationally?}\nopagebreak
 
-Rational thinking is about making ``correct'' inferences based on existing knowledge. This can be done either in strict formal logic or with systems built to deal with uncertainty. Acting rationally is about making the actions which is expected to lead to the best outcome. Rational thought can help an agent act rationally but is not required to act rationally. Reflex reactions in a robot system which do not involve deliberation can still be rational if they accomplish the right action.
+Rational thinking is about making ``correct'' inferences based on existing knowledge. This can be done either in strict formal logic or with systems built to deal with uncertainty. Acting rationally is about making the actions which are expected to lead to the best outcome. Rational thought can help an agent act rationally but is not required to act rationally. As an example, reflex reactions in a robot system which do not involve deliberation can still be rational if they accomplish the right action.
 
-\item \textbf{What is Tarski's ``theory of reference'' about?}
+\item \textbf{What is Tarski's ``theory of reference'' about?}\nopagebreak
 
 Alfred Tarski's ``theory of reference'' shows how to relate the objects in a logic to objects in the real world. Problems such as ``the liar's paradox'' are possible in a closed language such as English because the expression ``this sentence is false'' is able to implicitly reference itself. If the reference is considered internal to the expression the expression leads to an infinite recursion:
 
@@ -90,27 +90,26 @@ This shows an example of how objects in the real world can be referenced from wi
 
 \textit{References: http://plato.stanford.edu/entries/truth/}
 
-\item \textbf{Describe rationality. How is it defined?}
+\item \textbf{Describe rationality. How is it defined?}\nopagebreak
 
-Rationality is defined as ``doing the right thing'' given the available information. Rationality describes the ability to base reasoning on logical inferences from available information and to act consistent with the available information to achieve goals established through reasoning.
+Rationality is ``doing the right thing`` in an environment as defined by an external \textit{performance measure}, given
+\begin{inparaenum}[\itshape a\upshape)]
+\item the agent's prior knowledge of the environment,
+\item the actions available to the agent, and
+\item the sensors available to the agent.
+\end{inparaenum}
 
-Within artificial intelligence a \textit{rational agent} will use the available information to perform actions which are as optimal as achievable according to a specified performance measure. The goals of a rational agent will typically be modeled by a utility function which is used to calculate the expected outcome of different actions. Due to complexity it will often be impossible to always perform actions with optimal expected outcome, so in practice the term \textit{limited rationality} is used to describe acting appropriately when there is insufficient time to calculate the optimal answer.
+Within artificial intelligence a \textit{rational agent} will use its prior knowledge of the environment and sensor inputs to perform actions which maximize the average external performance measure. The goals of a rational agent will typically be modeled by a utility function which internalize the external performance measure. The utility function is used to calculate the expected utility of the available actions. Due to complexity it will often be impossible to always perform actions with optimal expected outcome, so in practice the term \textit{limited rationality} is used to describe acting appropriately when there is insufficient time to compute the optimal set of actions.
 
-\item \textbf{Consider a robot whose task it is to cross the road. Its action portfolio looks like this: look-back, look-forward, look-left-look-right, go-forward, go-back, go-left and go-right.}
+\item \textbf{Consider a robot whose task it is to cross the road. Its action portfolio looks like this: look-back, look-forward, look-left-look-right, go-forward, go-back, go-left and go-right.}\nopagebreak
 
 \begin{enumerate}
 
-\item \textbf{While crossing the road, a helicopter falls down on the robot and smashes it. Is the robot rational?}
+\item \textbf{While crossing the road, a helicopter falls down on the robot and smashes it. Is the robot rational?}\nopagebreak
 
-Given that
-\begin{inparaenum}[\itshape a\upshape)]
-\item the robot's choice to cross the road was rational to begin with; and
-\item that the robot did not possess information indicating that a helicopter crashing into the road would be a distinct possibility; and
-\item that the robot was not built with sensors allowing it to sense the incoming helicopter as well as the agility necessary to avoid it;
-\end{inparaenum}
-then it can be said that the robot acted rationally even if the outcome was unfortunate.
+Given that the action portfolio of the agent does not contain the action to look up, it does not seem possible for the agent to perceive a falling helicopter. If the decision to cross the road was rational to begin with and the agent did not have prior information indicating a significant enough likelihood of a helicopter falling down into the street, the robot can be said to have acted rationally even if the outcome was unfortunate.
 
-\item \textbf{While crossing the road on a green light, a passing car crashes into the robot, preventing it from crossing. Is the robot rational?}
+\item \textbf{While crossing the road on a green light, a passing car crashes into the robot, preventing it from crossing. Is the robot rational?}\nopagebreak
 
 This scenario is similar to the helicopter scenario; however this case is different both because a car driving on a road is normal and because a car running a red light has a reasonable chance of occurring. A human stumbling into the road when given a green light, without further observing the environment, would easily be considered irrational since
 \begin{inparaenum}[\itshape a\upshape)]
@@ -119,11 +118,11 @@ This scenario is similar to the helicopter scenario; however this case is differ
 \item the consequence of being hit by a car is in general high and possibly fatal.
 \end{inparaenum}
 
-Designing a robot meant to cross a traditional road controlled by light signals without providing it with further sensing would be cruel. If the robot is not equipped with the sensing capabilities to sense the passing cars and its mission to cross the road is rational, then the robot cannot be faulted for being struck by a passing car. If the robot was built in a more sensible manner with the appropriate sensing capabilities it could be faulted if struck by a passing car for the same reason a human would be considered irrational. The driver of the car would still be fully at fault for running into someone while running a red light, but the robot could be considered less than perfectly rational for not being as cautious as it should.
+The action ``look-left-look-right'' indicates that the robot is capable of sensing incoming cars before crossing the street. Given that the robot is able to sense the incoming car the action to cross the street could be considered irrational for the same reason a human would be considered irrational in the same scenario. The driver of the car would still be fully at fault for running into someone while running a red light, but the robot could be considered less than perfectly rational for not being as cautious as it should.
 
 \end{enumerate}
 
-\item \textbf{Consider the vacuum cleaner world described in Chapter 2.2.1 of the textbook. Let us modify this vacuum environment so that the agent is penalized 1 point for each movement.}
+\item \textbf{Consider the vacuum cleaner world described in Chapter 2.2.1 of the textbook. Let us modify this vacuum environment so that the agent is penalized 1 point for each movement.}\nopagebreak
 
 In the following answers it is assumed that the robot is to be evaluated on the premise of being a rational agent and according to the following performance measure:
 
@@ -135,13 +134,13 @@ In the following answers it is assumed that the robot is to be evaluated on the 
 
 \begin{enumerate}
 
-\item \textbf{Can a simple reflex agent be rational for this environment?} 
+\item \textbf{Can a simple reflex agent be rational for this environment?}\nopagebreak
 
-The rational agent theory requires the robot to make actions which maximizes its performance measure. As a simple reflex agent does not have any internal state, it will not be able to remember whether there is any dirt in its opposite location. As it can only sense the presence of dirt in its current location it must keep moving between the two locations, sucking up any detected dirt before moving on to the opposite location. 
+The rational agent theory requires the robot to make actions which maximizes its performance measure. As a simple reflex agent does not have any internal state, it will not be able to remember whether there is any dirt in its opposite location. As it can only sense the presence of dirt in its current location it must keep moving between the two locations, sucking up any detected dirt before moving on to the opposite location.
 
-When evaluated by the updated performance measure which places a cost on movement, the action which would maximize its performance measure would be to stop moving after cleaning both locations. This would ensure 2 points awarded for every time step for the rest of the scenario. Continuously moving between the two locations to check for dirt will cost the robot 1 point per time step without any beneficial effect. The robot's behavior can therefore not be considered rational as evaluated by the updated performance measure. 
+When evaluated by the updated performance measure which places a cost on movement, the action which would maximize its performance measure would be to stop moving after cleaning both locations. This would ensure 2 points awarded for every time step for the rest of the scenario. Continuously moving between the two locations to check for dirt will cost the robot 1 point per time step without any beneficial effect. The robot's behavior can therefore not be considered rational as evaluated by the updated performance measure.
 
-\item \textbf{Can a reflex agent with state be rational in this environment?}
+\item \textbf{Can a reflex agent with state be rational in this environment?}\nopagebreak
 
 Yes, a reflex agent with state would be able to operate rationally in this environment as evaluated by the updated performance measure. Since the agent will be able to remember whether there still is dirt in the other location it can stop moving once it knows that all locations has been cleaned. See Table~\ref{table:agent_function_reflex_state} for the agent function description.
 
@@ -161,7 +160,7 @@ $\mathit{[B, Clean]}$ & $\mathit{[Unknown, Any]}$ & $\mathit{Left}$ & $\mathit{[
 \end{center}
 \end{table}
 
-\item \textbf{Assume now that the simple reflex agent (i.e., no internal state) can perceive the clean/dirty state of both locations at the same time. Can this agent be rational? Explain your answer. In case it can be rational, design the agent function.}
+\item \textbf{Assume now that the simple reflex agent (i.e., no internal state) can perceive the clean/dirty state of both locations at the same time. Can this agent be rational? Explain your answer. In case it can be rational, design the agent function.}\nopagebreak
 
 Yes, a simple reflex agent which can perceive the clean/dirty state of both locations at the same time, while still being able to perceive its location, will be able to act perfectly rational. With the improved sensing capabilities it will be able to perceive that there is no more work to complete and be able to rest after finishing its task, see Table~\ref{table:agent_function_reflex_percept} for the agent function.
 
@@ -182,7 +181,7 @@ $\mathit{[B, Dirty, Clean]}$ & $\mathit{Left}$ \\
 
 \end{enumerate}
 
-\item \textbf{Consider the vacuum cleaner environment shown in Figure 2.3 in the textbook. Describe the environment using properties from Chapter 2.3.2, e.g. episodic/sequential, deterministic/stochastic etc. Explain selected values for properties in regards to the vacuum cleaner environment.}
+\item \textbf{Consider the vacuum cleaner environment shown in Figure 2.3 in the textbook. Describe the environment using properties from Chapter 2.3.2, e.g. episodic/sequential, deterministic/stochastic etc. Explain selected values for properties in regards to the vacuum cleaner environment.}\nopagebreak
 
 \begin{enumerate}
 
@@ -190,11 +189,11 @@ $\mathit{[B, Dirty, Clean]}$ & $\mathit{Left}$ \\
 
 \item \textbf{Single-agent vs. multi-agent} -- As described, the vacuum cleaner environment will only contain one agent; the vacuum cleaner.
 
-\item \textbf{Deterministic vs. stochastic} -- The vacuum cleaner environment is an ideal environment where each following state is completely determined by the current state and the action performed by the vacuum cleaner agent. This makes the environment deterministic.
+\item \textbf{Deterministic vs. stochastic} -- The percept sequence examples in the textbook shows the examples ``[A,~Clean],~[A,~Dirty]'' and ``[A,~Clean],~[A,~Clean],~[A,~Dirty]''. These examples suggest that the locations in the environment can become dirty after being clean. The rate at which the locations become dirty is not specified, so it is assumed that there is some probability for each time step that a location will be dirty in the next time step, which makes the environment stochastic.
 
 \item \textbf{Episodic vs. sequential} -- The vacuum cleaner environment could be considered episodic as each location is considered atomically and does not depend on actions taken in other locations. For each location the agent performs its action as a direct consequence of its current percepts. There is also an element of sequentiality to the environment both because the robot must move to a location before the location can be cleaned; and because the cleaning of a location can affect the decision to return to the location if the robot has the state or perception to allow this.
 
-\item \textbf{Statis vs. dynamic} -- The vacuum cleaner environment does not change while the robot is deliberating, however as the performance score changes with time the environment can be described as semi-dynamic. If both locations are dirty and the robot spends time deliberating, the robot will lose out on attainable points compared to if it had cleaned out locations which would earn it points in the time passed.
+\item \textbf{Static vs. dynamic} -- The performance score changes with time, which would make the environment semi-dynamic. However dirt can also appear stochastically at new time steps while the agent is deliberating, making the environment dynamic.
 
 \item \textbf{Discrete vs. continuous} -- The vacuum cleaner environment is described as an ideal environment where the spatial locations, the cleanliness of each location, time steps, the robot's perceptions, the robot's actions, and the reward system are all discrete.
 
@@ -204,27 +203,27 @@ Overall the vacuum cleaner environment represents an easy agent environment; \te
 
 \end{enumerate}
 
-\item \textbf{Discuss the advantages and limitations of these four basic kinds of agents:}
+\item \textbf{Discuss the advantages and limitations of these four basic kinds of agents:}\nopagebreak
 
 \begin{enumerate}
 
-\item \textbf{Simple reflex agents}
+\item \textbf{Simple reflex agents}\nopagebreak
 
 Simple reflex agents do not have state and only consider current percepts when determining their actions. They are often implemented using simple \textit{``if-then''}  rules describing the desired behavior. Simple behaviors can often be described sufficiently and transparently in this manner. However more complex behaviors which depend on sequential actions and planning can become difficult or impossible to implement without access to state and more sophisticated implementation techniques.
 
 High degrees or full visibility is often necessary to avoid getting stuck in infinite loops which can otherwise be hard for simple reflex agents to escape. One technique to break out of loops is to introduce some randomness in decisions.
 
-The possibility for small implementations and not requiring memory makes simple reflex agents attractive when building low-cost systems, especially in swarm configurations where more advanced group behavior can be construed from simple agent behaviors. Simple reflex agents can also be attractive in scenarios where quick responses are required and more advanced deliberation will consume too much time.
+The possibility for straightforward implementations and not requiring memory makes simple reflex agents attractive when building low-cost systems, especially in swarm configurations where more advanced group behavior can be construed from simple agent behaviors. Simple reflex agents can also be attractive in scenarios where quick responses are required and more advanced deliberation will consume too much time.
 
-\item \textbf{Model-based reflex agents}
+\item \textbf{Model-based reflex agents}\nopagebreak
 
 State combined with a model describing how the current state will be transformed by the available actions can be added to a simple reflex agent; making it a model-based reflex agent. This helps fix some of the weaknesses of a simple reflex agent since the model-based state can now keep track of parts of the environment which are not part of the agent's current percepts. In some cases it may also be possible to refactor simple reflex agent behavior rules to simpler rules when state can be used as part of the rules.
 
-\item \textbf{Goal-based agents}
+\item \textbf{Goal-based agents}\nopagebreak
 
-Goal-based agents are incorporated with a notion of ``desirable world states'' which the agent seeks to achieve. Having goals stated more explicitly and separate from being encoded into base behaviors is an advantage since it helps make the goals more transparent and easier to update. Goal-based agents often need some ability to plan or search for ways to apply its actions to achieve its desired world state(s), since most goals will not be achievable through a direct mapping between current percepts and actions.
+Goal-based agents are incorporated with a notion of ``desirable world states'' which the agent seeks to achieve. Having goals stated explicitly and separate from being encoded into base behaviors is an advantage since it helps make the goals more transparent and easier to update. Goal-based agents often need some ability to plan or search for ways to apply its actions to achieve its desired world state(s), since most goals will not be achievable through a direct mapping between current percepts and actions.
 
-\item \textbf{Utility-based agents} 
+\item \textbf{Utility-based agents}\nopagebreak
 
 Utility provides a mechanism to quantify the desirability of outcomes. Instead of designing the behaviors of an agent to align with an external performance measure, or pursue purely binary goals; a sensible utility function can be built into an agent enabling it to perform well in more complex situations. When an agent must decide between conflicting goals and a trade-off must be found, or if the agent must decide between goals which involve uncertainties; a utility function provides a quantified mechanism to find the highest achievable expected utility from the available actions.
 
@@ -233,4 +232,3 @@ Utility provides a mechanism to quantify the desirability of outcomes. Instead o
 \end{enumerate}
 
 \end{document}
-
