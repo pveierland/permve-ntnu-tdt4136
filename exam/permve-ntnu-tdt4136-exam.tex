@@ -1,0 +1,20 @@
+\documentclass[avery5388,grid,frame]{flashcards}
+
+\usepackage[T1]{fontenc} % Use 8-bit encoding that has 256 glyphs
+\usepackage[english]{babel} % English language/hyphenation
+\usepackage{amsmath,amsfonts,amsthm} % Math packages
+\usepackage[inline]{enumitem}
+
+\cardfrontstyle[\large\slshape]{headings}
+\cardbackstyle{plain}
+
+\makeatletter
+\renewcommand{\flashcards@ps@back@begin@plain}
+    {\vspace*{\fill}\flashcards@format@back}
+\makeatother
+
+\begin{document}
+
+\input{permve-ntnu-tdt4136-exam-intro.tex}
+
+\end{document}
