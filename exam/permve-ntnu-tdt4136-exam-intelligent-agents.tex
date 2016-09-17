@@ -1,0 +1,123 @@
+\cardfrontfoot{Intelligent Agents}
+
+\begin{flashcard}[Question]{What is an \textbf{agent}, a \textbf{percept sequence},\\an \textbf{agent function}, and an \textbf{agent program}?}
+\begin{center}
+An \textbf{agent} is anything that can be viewed as perceiving its \textbf{environment} through \textbf{sensors} and acting upon that environment through \textbf{actuators}.
+
+\medskip
+
+A \textbf{percept sequence} is the complete history of\\everything an \textbf{agent} has \textbf{perceived}.
+
+\medskip
+
+An \textbf{agent function} is a mapping from a \textbf{percept sequence} to an \textbf{action}.
+
+\medskip
+
+An \textbf{agent program} is an implementation of the \textbf{agent function}.
+\end{center}
+\end{flashcard}
+
+\begin{flashcard}[Question]{What is the definition of a \textbf{rational agent}?}
+\begin{center}
+For each possible percept sequence, a \textbf{rational agent} should select an action that is expected to maximize its performance measure,\\given the evidence provided by the percept sequence to date and whatever built-in knowledge the agent has.
+\end{center}
+\end{flashcard}
+
+\begin{flashcard}[Question]{What is \textbf{PEAS}?}
+\begin{center}
+\textbf{PEAS} is an acronym for properties of \textbf{task environments}:
+
+\medskip
+
+\textbf{(P)erformance Measure} specifies how the success of\\an \textbf{agent} will be evaluated.
+
+\medskip
+
+\textbf{(E)nvironment} describes the context of an \textbf{agent};\\what it will encounter and interact with.
+
+\medskip
+
+\textbf{(A)ctuators} describes the ways in which an \textbf{agent} may\\affect the \textbf{environment}.
+
+\medskip
+
+\textbf{(S)ensors} describes the ways in which an \textbf{agent} will\\receive information from the \textbf{environment}.
+\end{center}
+\end{flashcard}
+
+\begin{flashcard}[Question]{What are six common dimensions for\\classifying \textbf{task environments}?}
+\footnotesize
+\begin{center}
+\begin{enumerate}
+\item \textbf{Fully observable} vs \textbf{partially observable} vs \textbf{unobservable}: Does the agent have access to the complete environment state at each point in time?
+\item \textbf{Single-agent} vs \textbf{multi-agent}: Does the \textbf{agent} cooperate or compete with other \textbf{agents} in the environment?
+\item \textbf{Deterministic} vs \textbf{stochastic}: Is the next state of the environment completely determined by the current state and the action executed by the \textbf{agent}?
+\item \textbf{Episodic} vs \textbf{sequential}: Whether the environment is divided temporally into atomic episodes where actions in previous episodes do not affect the following episode, or whether a current action can affect all future actions.
+\item \textbf{Static} vs \textbf{dynamic}: Whether the environment can change while the \textbf{agent} is deliberating. If the score is affected by the deliberation time but the environment is not, the environment is \textbf{semi-dynamic}.
+\item \textbf{Discrete} vs \textbf{continuous}: Does the state, time, percepts, and actions in the environment have a finite number of distinct values, or are they continuous?
+\end{enumerate}
+\end{center}
+\end{flashcard}
+
+\begin{flashcard}[Question]{How does a \textbf{simple reflex agent} work?}
+\begin{center}
+A \textbf{simple reflex agent} works by interpreting its sensor input to establish a state. The state is matched against a set of \textbf{condition-action rules} to find the best matching rule. The agent then performs the action specified by the matched rule.
+\end{center}
+\end{flashcard}
+
+\begin{flashcard}[Question]{How does a \textbf{model-based reflex agent} work?}
+\begin{center}
+A \textbf{model-based reflex agent} works by keeping an internal model of the world state updated, by considering its current internal model state, the performed action, the current percept, and the model of how the world transitions given the current world state and the performed action.
+
+\medskip
+
+The state is matched against a set of \textbf{condition-action rule} to find the best matching rule. The agent then performs the action specified by the matched rule.
+\end{center}
+\end{flashcard}
+
+\begin{flashcard}[Question]{How does a \textbf{goal-based agent} work?}
+\begin{center}
+A \textbf{goal-based agent} works by keeping an internal model of the world state updated, by considering its current internal model state, the performed action, the current percept, and the model of how the world transitions given the current world state and the performed action.
+
+\medskip
+
+For all actions, the resulting world state is considered given the knowledge of how the world is and how it will change for the given action.
+
+\medskip
+
+Given the goals in the system, the agent will then select the action most suited towards accomplishing its goals.
+\end{center}
+\end{flashcard}
+
+\begin{flashcard}[Question]{How does a \textbf{utility-based agent} work?}
+\begin{center}
+A \textbf{utility-based agent} works by keeping an internal model of the world state updated, by considering its current internal model state, the performed action, the current percept, and the model of how the world transitions given the current world state and the performed action.
+
+\medskip
+
+For all actions, the resulting world state is considered given the knowledge of how the world is and how it will change for the given action.
+
+\medskip
+
+For all actions, the resulting utility is evaluated using a utility function, which is essentially an internalization of the external performance measure. The action with the most utility is then selected by the agent.
+\end{center}
+\end{flashcard}
+
+\begin{flashcard}[Question]{How does a \textbf{learning agent} work?}
+\begin{center}
+A \textbf{learning agent} has the functionality of a normal agent contained in its \textbf{performance element}, which received inputs from its sensors and is changed by the \textbf{learning element}, which it provides \textbf{knowledge} back to.
+
+\medskip
+
+The \textbf{critic} assesses the performance of the agent with respect to a fixed performance standard based on inputs from its sensors and providing feedback to the \textbf{learning element}.
+
+\medskip
+
+The \textbf{learning element} uses feedback from the \textbf{critic} and knowledge from the \textbf{performance element} to improve the \textbf{performance element} as well as provide learning goals to the \textbf{problem generator}.
+
+\medskip
+
+The \textbf{problem generator} uses learning goals from the \textbf{learning element} and suggests exploratory actions to the \textbf{performance element} which will lead to new and informative experiences.
+\end{center}
+\end{flashcard}
