@@ -1,0 +1,174 @@
+\cardfrontfoot{Logical Agents}
+
+\begin{flashcard}[Question]{What does a logic-based \textbf{knowledge base} consist of,\\what is \textbf{background knowledge}, and\\what are \textbf{axioms}?}
+\begin{center}
+A logic-based \textbf{knowledge base} consists of a set of\\\textbf{sentences} which represent assertions.
+
+\medskip
+
+\textbf{Background knowledge} describes the\\initial contents of a \textbf{knowledge base}.
+
+\medskip
+
+\textbf{Axioms} are sentences which are taken as given\\without being derived from other sentences.
+\end{center}
+\end{flashcard}
+
+\begin{flashcard}[Question]{Describe the program of a \textbf{knowledge-based agent}.}
+\begin{center}
+\begin{minipage}{0.9\textwidth}
+\textbf{function} \textsc{KB-Agent}(\textit{percept}) \textbf{returns} an \textit{action}
+
+\quad \textbf{persistent:} \textit{KB}, a knowledge base. \textit{t}, a counter indicating time
+
+\quad \textsc{Tell}(\textit{KB}, \textsc{Make-Percept-Sentence}(\textit{percept}, \textit{t}))
+
+\quad \textit{action} $\leftarrow$ \textsc{Ask}(\textit{KB}, \textsc{Make-Action-Query}(\textit{t}))
+
+\quad \textsc{Tell}(\textit{KB}, \textsc{Make-Action-Sentence}(\textit{action}, \textit{t}))
+
+\quad $t \leftarrow t + 1$
+
+\quad \textbf{return} \textit{action}
+
+\end{minipage}
+\end{center}
+\end{flashcard}
+
+\begin{flashcard}[Question]{What is defined by the \textbf{syntax} and \textbf{semantics} of a logic?}
+\begin{center}
+The \textbf{syntax} of a logic specifies which \textbf{sentences} are well-formed.
+
+\medskip
+
+The \textbf{semantics} of a logic defines the \textbf{truth} of each \textbf{sentence} with respect to each possible \textbf{world} (\textbf{model}).
+\end{center}
+\end{flashcard}
+
+\begin{flashcard}[Question]{What is a \textbf{model} and what is its relation to a \textbf{sentence}?}
+\begin{center}
+A \textbf{model} is a mathematical abstraction which uniquely fixes the values of all variables in the world to a value. There is one \textbf{model} for every permutation of collective value assignments to all variables.
+
+\medskip
+
+If a \textbf{sentence} $\alpha$ is true in a \textbf{model} $m$, we say that $m$ \textbf{satisfies} $\alpha$, and that $m$ is a \textbf{model} of $\alpha$. The notation $M(\alpha)$ describes the set of all models of $\alpha$.
+\end{center}
+\end{flashcard}
+
+\begin{flashcard}[Question]{What is \textbf{entailment}?}
+\begin{center}
+\textbf{Entailment} between a \textbf{sentence} $\alpha$ and $\beta$ means that\\the \textbf{sentence} $\beta$ \textit{follows logically} from sentence $\alpha$.
+
+\medskip
+
+$\alpha \models \beta \quad \Leftrightarrow \quad M(\alpha) \subseteq M(\beta)$
+
+\medskip
+
+Formally, the \textbf{sentence} $\alpha$ entails the \textbf{sentence} $\beta$ if and only if,\\in every model in which $\alpha$ is true, $\beta$ is also true.
+
+\medskip
+
+Note that this makes $\alpha$ a \textit{stronger} assertion\\than $\beta$ as it rules out \textit{more} possible worlds.
+\end{center}
+\end{flashcard}
+
+\begin{flashcard}[Question]{What is \textbf{soundness}, \textbf{truth-preserving}, and \textbf{completeness}?}
+\begin{center}
+\textbf{Soundness}, or \textbf{truth-preserving}, refers to the property of only deriving sentences which are entailed by the initial sentence.
+
+\medskip
+
+\textbf{Completeness} refers to the ability of deriving any sentence which is entailed by the initial sentence.
+\end{center}
+\end{flashcard}
+
+\begin{flashcard}[Question]{What are the five common \textbf{logical connectives}?}
+\footnotesize
+\begin{itemize}
+\item \textsc{NOT}: A sentence $\neg A$ denotes the \textbf{negation} of the sentence $A$.
+\item \textsc{AND}: A sentence whose main connective is $\land$ is called a \textbf{conjunction} and its parts are \textbf{conjuncts}. Both \textbf{conjuncts} must be true for the connected sentence to be true.
+\item \textsc{OR}: A sentence whose main connective is $\lor$ is called a \textbf{disjunction} and its parts are \textbf{disjuncts}. Either \textbf{disjunct} or both \textbf{disjuncts} must be true for the connected sentence to be true.
+\item \textsc{Implication}: A sentence such as $A \Rightarrow B$ is called an \textbf{implication}, where $A$ is the \textbf{premise} or \textbf{antecedent}, and $B$ is the \textbf{conclusion} or \textbf{consequent}. Implications are also known as \textbf{rules} or \textbf{if-then} statements. Either the \textbf{premise} must be false or the \textbf{conclusion} must be true for the connected sentence to be true.
+\item \textsc{Biconditional}: A sentence such as $A \Leftrightarrow B$ is true if both $A$ and $B$ are false, or if both $A$ and $B$ are true.
+\end{itemize}
+\end{flashcard}
+
+\begin{flashcard}[Question]{What is an \textbf{atomic sentence}, and\\what is a \textbf{literal}?}
+\begin{center}
+An \textbf{atomic sentence} consists of a single \textbf{proposition symbol} which stands for a \textbf{proposition} which can be true or false.
+
+\medskip
+
+A \textbf{literal} is either an atomic sentence (a \textbf{positive literal} or\\a negated atomic sentence (a \textbf{negative literal}).
+\end{center}
+\end{flashcard}
+
+\begin{flashcard}[Question]{What is \textbf{logical equivalence}, \textbf{validity}, and the \textbf{deduction theorem}?}
+\begin{center}
+Two sentences $\alpha$ and $\beta$ are \textbf{logically equivalent} if\\they are true in the same set of models.
+
+\medskip
+
+$\alpha \equiv \beta \quad \Leftrightarrow \quad \alpha \models \beta ~ \text{and} ~ \beta \models \alpha .$
+
+\medskip
+
+A sentence is \textbf{valid} if it is true in all models, meaning that it must be \textit{necessarily} true. \textbf{Valid sentences} are also known as \textbf{tautologies}.
+
+\medskip
+
+The \textbf{deduction theorem} states that \textit{for any sentences $\alpha$ and $\beta$,\\$\alpha \models \beta$ if and only if the sentence $(\alpha \Rightarrow \beta)$ is valid.}
+\end{center}
+\end{flashcard}
+
+\begin{flashcard}[Question]{What is \textbf{satisfiability} and how can it be used for proofs?}
+\begin{center}
+A sentence is \textbf{satisfiable} if it is true in, or \textbf{satisfied}, by some model.
+
+\medskip
+
+It can be proved that $\alpha$ entails $\beta$ by \textbf{refutation},\\also known as \textbf{contradiction}, by assuming that $\beta$ is false\\and that this leads to a contradiction with the known axiom $\alpha$.
+
+\medskip
+
+$\alpha \models \beta \textit{~if and only if the sentence~} (\alpha \land \beta) \textit{~is unsatisfiable.}$
+\end{center}
+\end{flashcard}
+
+\begin{flashcard}[Question]{What is \textbf{Modus Ponens}?}
+\begin{center}
+\textbf{Modus Ponens} (Latin for \textit{mode that affirms}) is\\an \textbf{inference rule} which states that:
+
+\begin{displaymath}
+\frac{\alpha \Rightarrow \beta, \quad \alpha}{\beta}.
+\end{displaymath}
+
+If it is known that $\alpha$ implies $\beta$, and $\alpha$ is true,\\then it can be inferred that $\beta$ must be true.
+\end{center}
+\end{flashcard}
+
+\begin{flashcard}[Question]{What is \textbf{resolution} and the \textbf{full resolution rule}?}
+\begin{center}
+\textbf{Resolution} allows inference between two \textbf{clauses} which contain \textbf{complementary literals}. A \textbf{clause} is a \textbf{disjunctions} of \textbf{literals}.\\\textbf{Resolution} produces a single new \textbf{clause} without the complementary \textbf{literals}. If $l_i$ and $m_j$ are \textbf{complementary literals},\\the \textbf{full resolution rule} states:
+\begin{displaymath}
+\frac{l_1 \lor \cdots \lor l_i \lor \cdots l_k, \quad m_1 \lor \cdots \lor m_j \lor \cdots \lor m_n}
+{l_1 \lor \cdots \lor l_{i-1} \lor l_{i+1} \lor \cdots \lor l_k \lor m_1 \lor \cdots \lor m_{j-1} \lor m_{j+1} \lor \cdots \lor m_n}
+\end{displaymath}
+The resulting \textbf{clause} is called the \textbf{resolvent}.
+\end{center}
+\end{flashcard}
+
+\begin{flashcard}[Question]{What is \textbf{conjunctive normal form} and why is it used?}
+\begin{center}
+\textbf{Conjunctive Normal Form} (\textbf{CNF}) is when a sentence is expressed as a \textbf{conjunction} of \textbf{clauses}, i.e. \textbf{disjunctions of literals}.
+
+\medskip
+
+Every sentence of \textbf{propositional logic} is logically equivalent to a \textbf{conjunction of clauses}.
+
+\medskip
+
+A resolution-based theorem prover can, for any sentences $\alpha$ and $\beta$ in \textbf{propositional logic}, decide whether $\alpha \models \beta$.
+\end{center}
+\end{flashcard}
