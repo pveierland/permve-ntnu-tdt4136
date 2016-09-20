@@ -41,7 +41,7 @@ The \textbf{syntax} of a logic specifies which \textbf{sentences} are well-forme
 
 \medskip
 
-The \textbf{semantics} of a logic defines the \textbf{truth} of each \textbf{sentence} with respect to each possible \textbf{world} (\textbf{model}).
+The \textbf{semantics} of a logic defines the \textbf{truth} of\\each \textbf{sentence} with respect to each possible \textbf{world} (\textbf{model}).
 \end{center}
 \end{flashcard}
 
@@ -104,7 +104,46 @@ A \textbf{literal} is either an atomic sentence (a \textbf{positive literal} or\
 \end{center}
 \end{flashcard}
 
-\begin{flashcard}[Question]{What is \textbf{logical equivalence}, \textbf{validity}, and the \textbf{deduction theorem}?}
+\begin{flashcard}[Question]{Describe the \textsc{TT-Entails?} algorithm.}
+\footnotesize
+\begin{center}
+\begin{minipage}{0.9\textwidth}
+\textbf{function} \textsc{TT-Entails?}(\textit{KB}, $\alpha$) \textbf{returns} \textit{true} or \textit{false}
+
+\quad \textbf{inputs:} \textit{KB}, the knowledge base, a sentence in propositional logic
+
+\quad \quad \quad \quad \quad $\alpha$, the query, a sentence in propositional logic
+
+\medskip
+
+\quad \textit{symbols} $\leftarrow$ a list of the propositional symbols in \textit{KB} and $\alpha$
+
+\quad \textbf{return} \textsc{TT-Check-All}(\textit{KB}, $\alpha$, $\{\}$)
+
+\medskip
+
+\textbf{function} \textsc{TT-Check-All}(\textit{KB}, $\alpha$, \textit{symbols}, \textit{model}) \textbf{returns} \textit{true} or \textit{false}
+
+\quad \textbf{if} \textsc{Empty?}(\textit{symbols}) \textbf{then}
+
+\quad \quad \textbf{if} \textsc{PL-True?}(\textit{KB}, \textit{model}) \textbf{then return} \textsc{PL-True?}($\alpha$, \textit{model})
+
+\quad \quad \textbf{else return} \textit{true}
+
+\quad \textbf{else do}
+
+\quad \quad $P \leftarrow \textsc{First}(\textit{symbols})$
+
+\quad \quad $\textit{rest} \leftarrow \textsc{Rest}(\textit{symbols})$
+
+\quad \quad \textbf{return} (\textsc{TT-Check-All}(\textit{KB}, $\alpha$, \textit{rest}, $\textit{model} \cup \{ P = \textit{true} \}$) \textbf{and}
+
+\quad \quad \quad \quad \quad \; (\textsc{TT-Check-All}(\textit{KB}, $\alpha$, \textit{rest}, $\textit{model} \cup \{ P = \textit{false} \}$)
+\end{minipage}
+\end{center}
+\end{flashcard}
+
+\begin{flashcard}[Question]{What is \textbf{logical equivalence}, \textbf{validity},\\and the \textbf{deduction theorem}?}
 \begin{center}
 Two sentences $\alpha$ and $\beta$ are \textbf{logically equivalent} if\\they are true in the same set of models.
 
@@ -135,6 +174,7 @@ It can be proved that $\alpha$ entails $\beta$ by \textbf{refutation},\\also kno
 $\alpha \models \beta \textit{~if and only if the sentence~} (\alpha \land \beta) \textit{~is unsatisfiable.}$
 \end{center}
 \end{flashcard}
+
 
 \begin{flashcard}[Question]{What is \textbf{Modus Ponens}?}
 \begin{center}
@@ -170,5 +210,140 @@ Every sentence of \textbf{propositional logic} is logically equivalent to a \tex
 \medskip
 
 A resolution-based theorem prover can, for any sentences $\alpha$ and $\beta$ in \textbf{propositional logic}, decide whether $\alpha \models \beta$.
+\end{center}
+\end{flashcard}
+
+\begin{flashcard}[Question]{What are \textbf{goal clauses}, \textbf{definite clauses}, and \textbf{Horn clauses}?}
+\begin{center}
+\textbf{Goal clauses} are \textbf{disjunctions of literals} in which\\\textit{there are no positive literals}, e.g. $\neg A \lor \neg B \lor \neg C$.
+
+\medskip
+
+\textbf{Definite clauses} are \textbf{disjunctions of literals} in which\\\textit{exactly one literal is positive}, e.g. $\neg A \lor \neg B \lor C$.
+
+\medskip
+
+\textbf{Horn clauses} are the superset of \textbf{goal clauses} and \textbf{definite clauses},\\i.e. \textbf{disjunctions of literals} in which \textit{at most one literal is positive},\\e.g. $\neg A \lor \neg B \lor \neg C$ or $\neg A \lor \neg B \lor C$.
+\end{center}
+\end{flashcard}
+
+\begin{flashcard}[Question]{What are the three reasons that \textbf{Horn clauses}\\are useful in knowledge bases?}
+\begin{center}
+\begin{enumerate}
+\item Every \textbf{goal clause} can be written as an implication whose premise is a conjunction of positive literals and whose conclusion is false, e.g. $(\neg A \lor \neg B \lor \neg C)$ can be written as $(A \land B \land C \Rightarrow \textit{False})$.\\Every \textbf{definitive clause} can be written as an implication whose premise is a conjunction of positive literals and whose conclusion is a single positive literal, e.g. $(\neg A \lor \neg B \lor C)$ can be written as $(A \land B \Rightarrow C)$.\\In \textbf{Horn form}, the premise is called the \textbf{body} and the conclusion is called the \textbf{head}. \textbf{Horn form} is easier to understand and reason with.
+\item Inference with \textbf{Horn clauses} can be done using \textbf{forward-chaining} and \textbf{backward-chaining} algorithms whose inference steps are obvious and easy for humans to follow.
+\item Determining entailment with \textbf{Horn clauses} can be done in linear time with respect to the size of the knowledge base.
+\end{enumerate}
+\end{center}
+\end{flashcard}
+
+\begin{flashcard}[Question]{Describe the \textbf{\textsc{PL-FC-Entails}} algorithm.}
+\footnotesize
+\begin{center}
+\begin{minipage}{0.9\textwidth}
+\textbf{function} \textsc{PL-FC-Entails?}(\textit{KB}, \textit{q}) \textbf{returns} \textit{true} or \textit{false}
+
+\quad \textbf{inputs:} \textit{KB}, the knowledge base, a set of propositional definite clauses
+
+\quad \quad \quad \quad \quad \textit{q}, the query, a propositional symbol
+
+\medskip
+
+\quad \textit{count} $\leftarrow$ a table, where \textit{count}$[c]$ is the number of symbols in $c$'s premise
+
+\quad \textit{inferred} $\leftarrow$ a table, where \textit{inferred}$[s]$ is initially \textit{false} for all symbols
+
+\quad \textit{agenda} $\leftarrow$ a queue of symbols, initially symbols known to be true in \textit{KB}
+
+\medskip
+
+\quad \textbf{while} \textit{agenda} is not \textit{empty} \textbf{do}
+
+\quad \quad $p \leftarrow$ \textsc{Pop}(\textit{agenda})
+
+\quad \quad \textbf{if} $p=q$ \textbf{then return} \textit{true}
+
+\quad \quad \textbf{if} \textit{inferred}$[p] = $\textit{false} \textbf{then}
+
+\quad \quad \quad \textit{inferred}$[p] \leftarrow$ \textit{true}
+
+\quad \quad \quad \textbf{for each} clause \textit{c} in \textit{KB} where \textit{p} is in \textit{c}.\textsc{Premise} \textbf{do}
+
+\quad \quad \quad \quad decrement \textit{count}$[c]$
+
+\quad \quad \quad \quad \textbf{if} \textit{count}$[c] = 0$ \textbf{then} add \textit{c}.\textsc{Conclusion} to \textit{agenda}
+
+\quad \textbf{return} \textit{false}
+\end{minipage}
+\end{center}
+\end{flashcard}
+
+\begin{flashcard}[Question]{Describe the \textbf{\textsc{DPLL-Satisfiable}} algorithm.}
+\footnotesize
+\begin{center}
+\begin{minipage}{0.9\textwidth}
+\textbf{function} \textsc{DPLL-Satisfiable?}$(s)$ \textbf{returns} \textit{true} or \textit{false}
+
+\quad \textbf{inputs:} $s$, a sentence in propositional logic
+
+\quad \textit{clauses} $\leftarrow$ the set of clauses in the CNF representation of $s$
+
+\quad \textit{symbols} $\leftarrow$ a list of the proposition symbols in $s$
+
+\quad \textbf{return} DPLL(\textit{clauses}, \textit{symbols}, $\{\}$)
+
+\medskip
+
+\textbf{function} DPLL(\textit{clauses}, \textit{symbols}, \textit{model}) \textbf{returns} \textit{true} or \textit{false}
+
+\quad \textbf{if} every clause in \textit{clauses} is true in \textit{model} \textbf{then return} \textit{true}
+
+\quad \textbf{if} some clause in \textit{clauses} is false in \textit{model} \textbf{then return} \textit{false}
+
+\quad \textit{P, value} $\leftarrow$ \textsc{Find-Pure-Symbol}(\textit{symbols}, \textit{clauses}, \textit{model})
+
+\quad \textbf{if} $P$ is non-null \textbf{then return} DPLL(\textit{clauses}, $\textit{symbols} - P$, \textit{model} $\cup$ \{$P=$\textit{value}\})
+
+\quad \textit{P, value} $\leftarrow$ \textsc{Find-Unit-Clause}(\textit{symbols}, \textit{clauses}, \textit{model})
+
+\quad \textbf{if} $P$ is non-null \textbf{then return} DPLL(\textit{clauses}, $\textit{symbols} - P$, \textit{model} $\cup$ \{$P=$\textit{value}\})
+
+\quad $P \leftarrow \textsc{First}(\textit{symbols}); \textit{rest} \leftarrow \textsc{Rest}(\textit{symbols})$
+
+\quad \textbf{return} DPLL(\textit{clauses}, \textit{rest}, $\textit{model} \cup \{ P = \textit{true} \}$) \textbf{or}
+
+\quad \quad \quad \;\;\;\;\;\! DPLL(\textit{clauses}, \textit{rest}, $\textit{model} \cup \{ P = \textit{false} \}$)
+\end{minipage}
+\end{center}
+\end{flashcard}
+
+\begin{flashcard}[Question]{Describe the \textbf{\textsc{WalkSAT}} algorithm.}
+\footnotesize
+\begin{center}
+\begin{minipage}{\textwidth}
+\textbf{function} \textsc{WalkSAT}(\textit{clauses}, \textit{p}, \textit{max\_flips}) \textbf{returns} a satisfying model or \textit{failure}
+
+\quad \textbf{inputs:} \textit{clauses}, a set of clauses in propositional logic
+
+\quad \quad \quad \quad \quad \textit{p}, the probability of choosing to do a ``random walk'' move, typically around 0.5
+
+\quad \quad \quad \quad \quad \textit{max\_flips}, number of flips allowed before giving up
+
+\medskip
+
+\quad \textit{model} $\leftarrow$ a random assignment of \textit{true}/\textit{false} to the symbols in \textit{clauses}
+
+\quad \textbf{for} $i=1$ \textbf{to} \textit{max\_flips} \textbf{do}
+
+\quad \quad \textbf{if} \textit{model} satisfies \textit{clauses} \textbf{then return} \textit{model}
+
+\quad \quad \textit{clause} $\leftarrow$ a randomly selected clause from \textit{clauses} that is false in \textit{model}
+
+\quad \quad \textbf{with probability} $p$ flip the value in \textit{model} of a randomly selected symbol from \textit{clause}
+
+\quad \quad \textbf{else} flip whichever symbol in \textit{clause} maximizes the number of satisfied clauses
+
+\quad \textbf{return} \textit{failure}
+\end{minipage}
 \end{center}
 \end{flashcard}
