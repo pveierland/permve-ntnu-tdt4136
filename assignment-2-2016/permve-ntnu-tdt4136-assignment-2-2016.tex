@@ -1,0 +1,482 @@
+\input{permve-ntnu-latex-assignment.tex}
+
+\usepackage{mathtools}
+
+\title{
+\normalfont \normalsize
+\textsc{Norwegian University of Science and Technology\\TDT4136 -- Introduction to Artificial Intelligence} \\ [25pt]
+\horrule{0.5pt} \\[0.4cm]
+\huge Assignment 2:\\ Propositional and Predicate Logics\\
+\horrule{2pt} \\[0.5cm]
+}
+
+\author{Per Magnus Veierland\\permve@stud.ntnu.no}
+
+\date{\normalsize\today}
+
+\newacro{AIMA}{Artificial Intelligence: A Modern Approach}
+\newacro{CNF}{Conjunctive Normal Form}
+
+\begin{document}
+
+\maketitle
+
+\section{Models and Entailment in Propositional Logic}
+
+\newcommand{\F}{{\color{WildStrawberry}\small false}}
+\newcommand{\T}{{\color{YellowGreen}\small true}}
+
+\begin{enumerate}
+\item
+\begin{enumerate}
+\item
+\begin{tabular}{ccc|c|ccc}
+$A$ & $\land$ & $\neg B$ & $\Rightarrow$ & $A$ & $\lor$ & $B$ \\
+\hline
+\F  & \F      & \T       & \T            & \F  & \F     & \F  \\
+\F  & \F      & \F       & \T            & \F  & \T     & \T  \\
+\T  & \T      & \T       & \T            & \T  & \T     & \F  \\
+\T  & \F      & \F       & \T            & \T  & \T     & \T  \\
+\end{tabular}
+
+By the deduction theorem, the statement $A \land \neg B \vDash A \lor B$ is true as the statement $A \land \neg B \Rightarrow A \lor B$ is valid, i.e. true in all models.
+\item
+\begin{tabular}{ccc|c|ccc}
+$A$ & $\lor$ & $B$ & $\Rightarrow$ & $A$ & $\land$ & $\neg B$ \\
+\hline
+\F  & \F     & \F  & \T            & \F  & \F      & \T       \\
+\F  & \T     & \T  & \F            & \F  & \F      & \F       \\
+\T  & \T     & \F  & \T            & \T  & \T      & \T       \\
+\T  & \T     & \T  & \F            & \T  & \F      & \F       \\
+\end{tabular}
+
+By the deduction theorem, the statement $A \lor B \vDash A \land \neg B$ is false as the statement $A \lor B \Rightarrow A \land \neg B$ is not valid, since there are models in which it is not true.
+\item
+\begin{tabular}{ccc|c|ccc}
+$A$ & $\Leftrightarrow$ & $B$ & $\Rightarrow$ & $A$ & $\Rightarrow$ & $B$ \\
+\hline
+\F  & \T                & \F  & \T            & \F  & \T            & \F  \\
+\F  & \F                & \T  & \T            & \F  & \T            & \T  \\
+\T  & \F                & \F  & \T            & \T  & \F            & \F  \\
+\T  & \T                & \T  & \T            & \T  & \T            & \T  \\
+\end{tabular}
+
+By the deduction theorem, the statement $A \Leftrightarrow B \vDash A \Rightarrow B$ is true as the statement $A \Leftrightarrow B \Rightarrow A \Rightarrow B$ is valid, i.e. true in all models.
+\item
+\begin{tabular}{ccccc|c|ccccc}
+$(A$ & $\Leftrightarrow$ & $B)$ & $\Leftrightarrow$ & $C$ & $\Rightarrow$ & $(A$ & $\lor$ & $\neg B)$ & $\lor$ & $\neg C$ \\
+\hline
+\F   & \T                & \F   & \F                & \F  & \T            & \F   & \T     & \T        & \T     & \T       \\
+\F   & \T                & \F   & \T                & \T  & \T            & \F   & \T     & \T        & \T     & \F       \\
+\F   & \F                & \T   & \T                & \F  & \T            & \F   & \F     & \F        & \T     & \T       \\
+\F   & \F                & \T   & \F                & \T  & \T            & \F   & \F     & \F        & \F     & \F       \\
+\T   & \F                & \F   & \T                & \F  & \T            & \T   & \T     & \T        & \T     & \T       \\
+\T   & \F                & \F   & \F                & \T  & \T            & \T   & \T     & \T        & \T     & \F       \\
+\T   & \T                & \T   & \F                & \F  & \T            & \T   & \T     & \F        & \T     & \T       \\
+\T   & \T                & \T   & \T                & \T  & \T            & \T   & \T     & \F        & \T     & \F       \\
+\end{tabular}
+
+By the deduction theorem, the statement $(A \Leftrightarrow B) \Leftrightarrow C \vDash A \lor \neg B \lor \neg C$ is true as the statement $(A \Leftrightarrow B) \Leftrightarrow C \Rightarrow A \lor \neg B \lor \neg C$ is valid, i.e. true in all models.
+\item
+\begin{tabular}{ccc|c|ccc}
+$(\neg A$ & $\land$ & $B)$ & $\land$ & $(A$ & $\Rightarrow$ & $B)$\\
+\hline
+\T        & \F      & \F   & \F      & \F   & \T            & \F  \\
+\T        & \T      & \T   & \T      & \F   & \T            & \T  \\
+\F        & \F      & \F   & \F      & \T   & \F            & \F  \\
+\F        & \F      & \T   & \F      & \T   & \T            & \T  \\
+\end{tabular}
+
+The statement $(\neg A \land B) \land (A \Rightarrow B)$ is satisfiable, since it is true in at least one model.
+\item
+\begin{tabular}{ccc|c|ccc}
+$(\neg A$ & $\land$ & $B)$ & $\land$ & $(A$ & $\Leftrightarrow$ & $B)$\\
+\hline
+\T        & \F      & \F   & \F      & \F   & \T            & \F  \\
+\T        & \T      & \T   & \F      & \F   & \F            & \T  \\
+\F        & \F      & \F   & \F      & \T   & \F            & \F  \\
+\F        & \F      & \T   & \F      & \T   & \T            & \T  \\
+\end{tabular}
+
+The statement $(\neg A \land B) \land (A \Leftrightarrow B)$ is not satisfiable, since it is not true in any model.
+\end{enumerate}
+\item
+\begin{enumerate}
+\item $\big(\frac{1}{2}\big)^2 Q = \frac{1}{2^2} 2^{100} = 2^{98}$
+
+The logical sentence $A_{31} \land \neg A_{76}$ is satisfied by $2^{98}$ models.
+\item $\big(\frac{1}{2}\big)^3 Q = \frac{1}{2^3} 2^{100} = 2^{97}$
+
+The logical sentence $A_{44} \land A_{49} \land A_{78}$ is satisfied by $2^{97}$ models.
+\item $\Big(1 - \big(\frac{1}{2}\big)^3\Big) Q = 2^{100} - \frac{1}{2^3} 2^{100} = \frac{8}{8} 2^{100} - \frac{1}{8} 2^{100} = \frac{7}{8} 2^{100} = 7 \frac{2^{100}}{2^3} = 7 \cdot 2^{97}$
+
+The logical sentence $A_{44} \lor A_{49} \lor A_{78}$ is satisfied by $7 \cdot 2^{97}$ models.
+\item $\frac{1}{2} Q = \frac{1}{2} 2^{100} = 2^{99}$
+
+The logical sentence $A_{70} \Rightarrow \neg A_{92}$ is satisfied by $2^{99}$ models.
+\item $\frac{1}{2} \cdot \frac{1}{2} \cdot Q = \frac{1}{2^2} 2^{100} = 2^{98}$
+
+The logical sentence $(A_7 \Leftrightarrow A_{72}) \land (A_{83} \Leftrightarrow A_{84})$ is satisfied by $2^{98}$ models.
+\item $\big(\frac{1}{2}\big)^8 Q = \frac{1}{2^8} 2^{100} = 2^{92}$
+
+The logical sentence $\neg A_9 \land \neg A_{19} \land A_{37} \land A_{50} \land A_{68} \land A_{73} \land A_{79} \land A_{81}$ is satisfied by $2^{92}$ models.
+\end{enumerate}
+\item
+\begin{tabular}{cccc|ccc|c}
+$P_{3,1}$ & $P_{3,2}$ & $P_{3,3}$ & $P_{4,4}$ & $\alpha_1$ & $\alpha_2$ & $\alpha_3$ & \textit{KB} \\
+\hline
+\F        & \F        & \F        & \F        & \F         & \F         & \F         & \F          \\
+\F        & \F        & \F        & \T        & \F         & \F         & \T         & \F          \\
+\F        & \F        & \T        & \F        & \F         & \T         & \T         & \F          \\
+\F        & \F        & \T        & \T        & \F         & \T         & \T         & \F          \\
+\F        & \T        & \F        & \F        & \F         & \F         & \F         & \F          \\
+\F        & \T        & \F        & \T        & \F         & \F         & \T         & \F          \\
+\F        & \T        & \T        & \F        & \F         & \T         & \T         & \F          \\
+\F        & \T        & \T        & \T        & \F         & \T         & \T         & \F          \\
+\T        & \F        & \F        & \F        & \T         & \F         & \F         & \F          \\
+\T        & \F        & \F        & \T        & \T         & \F         & \T         & \T          \\
+\T        & \F        & \T        & \F        & \T         & \T         & \T         & \T          \\
+\T        & \F        & \T        & \T        & \T         & \T         & \T         & \T          \\
+\T        & \T        & \F        & \F        & \T         & \F         & \F         & \F          \\
+\T        & \T        & \F        & \T        & \T         & \F         & \T         & \F          \\
+\T        & \T        & \T        & \F        & \T         & \T         & \T         & \F          \\
+\T        & \T        & \T        & \T        & \T         & \T         & \T         & \F          \\
+\end{tabular}
+
+By the deduction theorem, the statement $\textit{KB} \vDash \alpha_1$ is true as the statement $\textit{KB} \Rightarrow \alpha_1$ is valid, i.e. true in all models.
+
+The statement $\textit{KB} \vDash \alpha_2$ is false as the statement $\textit{KB} \Rightarrow \alpha_2$ is not valid, since there are models in which it is not true.
+
+The statement $\textit{KB} \vDash \alpha_3$ is true as the statement $\textit{KB} \Rightarrow \alpha_3$ is valid, i.e. true in all models.
+\end{enumerate}
+
+\section{Resolution in Propositional Logic}
+
+\begin{enumerate}
+\item
+\begin{enumerate}
+\item
+$\neg A \lor (B \land C) \equiv
+\underline{(\neg A \lor B) \land (\neg A \lor C)}$
+
+\item
+$\neg (A \Rightarrow B) \land \neg (C \Rightarrow D)\\
+\equiv \neg (\neg A \lor B) \land \neg (\neg C \lor D)\\
+\equiv (\neg \neg A \land \neg B) \land (\neg \neg C \land \neg D)\\
+\equiv (A \land \neg B) \land (C \land \neg D)\\
+\equiv \underline{A \land \neg B \land C \land \neg D}$
+
+\item
+$\neg (A \Rightarrow B) \lor \neg (C \Rightarrow D)\\
+\equiv \neg (\neg A \lor B) \lor \neg (\neg C \lor D)\\
+\equiv (\neg \neg A \land \neg B) \lor (\neg \neg C \land \neg D)\\
+\equiv (A \land \neg B) \lor (C \land \neg D)\\
+\equiv (A \lor (C \land \neg D)) \land (\neg B \lor (C \land \neg D))\\
+\equiv ((A \lor C) \land (A \lor \neg D)) \land ((\neg B \lor C) \land (\neg B \lor \neg D))\\
+\equiv \underline{(A \lor C) \land (A \lor \neg D) \land (\neg B \lor C) \land (\neg B \lor \neg D)}$
+
+\item
+$(A \Rightarrow B) \Leftrightarrow C\\
+\equiv ((A \Rightarrow B) \Rightarrow C) \land (C \Rightarrow (A \Rightarrow B))\\
+\equiv (\neg (\neg A \lor B) \lor C) \land (\neg C \lor (\neg A \lor B))\\
+\equiv ((\neg \neg A \land \neg B) \lor C) \land (\neg C \lor \neg A \lor B)\\
+\equiv ((A \land \neg B) \lor C) \land (\neg C \lor \neg A \lor B)\\
+\equiv ((A \lor C) \land (\neg B \lor C)) \land (\neg C \lor \neg A \lor B)\\
+\equiv \underline{(A \lor C) \land (\neg B \lor C) \land (\neg C \lor \neg A \lor B)}$
+\end{enumerate}
+
+\item
+Determining whether $(\textit{KB} \vDash \neg A)$ using resolution is done using the principle of proof by contradiction. Showing $(\textit{KB} \vDash \neg A)$ is done by showing that $(\textit{KB} \land A)$ is unsatisfiable.
+
+The first step is to convert $(\textit{KB} \land A)$ into \ac{CNF}:
+
+$((X \land \neg Y) \Rightarrow \neg B) \land (\neg X \Rightarrow C) \land (B \land \neg Y) \land (A \Rightarrow \neg C) \land (A)\\
+\equiv (\neg (X \land \neg Y) \lor \neg B) \land (\neg \neg X \lor C) \land (B) \land (\neg Y) \land (\neg A \lor \neg C) \land (A)\\
+\equiv ((\neg X \lor \neg \neg Y) \lor \neg B) \land (X \lor C) \land (B) \land (\neg Y) \land (\neg A \lor \neg C) \land (A)\\
+\equiv \underline{(\neg X \lor Y \lor \neg B) \land (X \lor C) \land (B) \land (\neg Y) \land (\neg A \lor \neg C) \land (A)}$
+
+\medskip
+
+Applying resolution to these six clauses yields:
+
+\begin{equation}
+\frac{\neg X \lor Y \lor \neg B, \quad X \lor C}{Y \lor \neg B \lor C}
+\end{equation}
+
+\begin{equation}
+\frac{Y \lor \neg B \lor C, \quad B}{Y \lor C}
+\end{equation}
+
+\begin{equation}
+\frac{Y \lor C, \quad \neg Y}{C}
+\end{equation}
+
+\begin{equation}
+\frac{\neg A \lor \neg C, \quad C}{\neg A}
+\end{equation}
+
+\begin{equation}
+\frac{\neg A, \quad A}{\textit{False}}
+\end{equation}
+
+This result shows by contradiction that $(\textit{KB} \land A)$ is unsatisfiable, which means that $(\textit{KB} \Rightarrow \neg A)$ must be valid, which means that the statement $(\textit{KB} \vDash \neg A)$ must be true.
+
+\item
+\begin{enumerate}
+\item
+\begin{tabular}{ccccc|c|ccc}
+$\big(\big(\textit{Food}$ & $\lor$ & $\textit{Drinks}\,\big)$ & $\Rightarrow$ & $\textit{Party}\,\big)$ & $\Rightarrow$ & $\big(\neg \textit{Party}$ & $\Rightarrow$ & $\neg \textit{Food}\,\big)$ \\
+\hline
+\F                        & \F     & \F                       & \T            & \F                      & \T            & \T                         & \T            & \T                          \\
+\F                        & \F     & \F                       & \T            & \T                      & \T            & \F                         & \T            & \T                          \\
+\F                        & \T     & \T                       & \F            & \F                      & \T            & \T                         & \T            & \T                          \\
+\F                        & \T     & \T                       & \T            & \T                      & \T            & \F                         & \T            & \T                          \\
+\T                        & \T     & \F                       & \F            & \F                      & \T            & \T                         & \F            & \F                          \\
+\T                        & \T     & \F                       & \T            & \T                      & \T            & \F                         & \T            & \F                          \\
+\T                        & \T     & \T                       & \F            & \F                      & \T            & \T                         & \F            & \F                          \\
+\T                        & \T     & \T                       & \T            & \T                      & \T            & \F                         & \T            & \F                          \\
+\end{tabular}
+
+The sentence $\big(\big(\textit{Food} \lor \textit{Drinks}\,\big) \Rightarrow \textit{Party}\,\big) \Rightarrow \big(\neg \textit{Party} \Rightarrow \neg \textit{Food}\,\big)$ is shown by enumeration to be valid, as it is true in all models.
+
+\item
+Conversion of left-hand side of main implication to \ac{CNF}:
+
+$(F \lor D) \Rightarrow P\\
+\equiv \neg (F \lor D) \lor P\\
+\equiv (\neg F \land \neg D) \lor P\\
+\equiv \underline{(\neg F \lor P) \land (\neg D \lor P)}$
+
+Conversion of right-hand side of main implication to \ac{CNF}:
+
+$\neg P \Rightarrow \neg F\\
+\equiv \underline{(P \lor \neg F)}$
+
+\item Proving the main implication is done using the principle of proof by contradiction. Showing $((F \lor D) \Rightarrow P) \Rightarrow (\neg P \Rightarrow \neg F)$ is done by showing that\\$((F \lor D) \Rightarrow P) \land \neg (\neg P \Rightarrow \neg F)$ is unsatisfiable.
+
+The right-hand side of the main implication from part b is negated:
+
+$\neg (P \lor \neg F) \equiv \neg P \land \neg \neg F \equiv \neg P \land F \equiv \underline{(\neg P) \land (F)}$
+
+This results in the following four clauses for resolution:
+
+$(\neg F \lor P) \land (\neg D \lor P) \land (\neg P) \land (F)$
+
+Applying resolution to these four clauses yields:
+
+\setcounter{equation}{0}
+
+\begin{equation}
+\frac{\neg F \lor P, \quad \neg P}{\neg F}
+\end{equation}
+
+\begin{equation}
+\frac{\neg F, \quad F}{\textit{False}}
+\end{equation}
+
+This result shows by contradiction that $((F \lor D) \Rightarrow P) \land \neg (\neg P \Rightarrow \neg F)$ is unsatisfiable, which means that the sentence $((F \lor D) \Rightarrow P) \Rightarrow (\neg P \Rightarrow \neg F)$ must be valid. This agrees with the result from part a where the sentence was found to be valid by enumeration.
+\end{enumerate}
+\end{enumerate}
+
+\section{Representations in First-Order Logic}
+
+\begin{enumerate}
+\item
+\begin{enumerate}
+\item $\textit{PlayedCharacter}(\textit{Bale}, \textit{Batman}) \land\\
+\textit{PlayedCharacter}(\textit{Clooney}, \textit{Batman}) \land\\
+\textit{PlayedCharacter}(\textit{Kilmer}, \textit{Batman})$
+\item $\neg \exists c ~ \textit{PlayedCharacter}(\textit{Ledger}, c) \land \textit{PlayedCharacter}(\textit{Bale}, c)$
+\item $\forall m ~ \textit{CharacterInMovie}(\textit{Batman}, m) \land \textit{Directed}(\textit{Nolan}, m) \Rightarrow \textit{PlayedInMovie}(\textit{Bale}, m)$
+\item $\exists m ~ \textit{CharacterInMovie}(\textit{Joker}, m) \land \textit{CharacterInMovie}(\textit{Batman}, m)$
+\item $\exists m ~ \textit{Directed}(\textit{Costner}, m) \land \textit{PlayedInMovie}(\textit{Costner}, m)$
+\item $\Big[\neg \exists m ~ \textit{PlayedInMovie}(\textit{Clooney}, m) \land \textit{PlayedInMovie}(\textit{Tarantino}, m)\Big] \land\\
+\Big[ \neg \exists m ~ \textit{Directed}(\textit{Tarantino}, m) \land \textit{PlayedInMovie}(\textit{Clooney}, m) \Big]$
+\item $\exists c, m ~ \textit{PlayedCharacter}(\textit{Thurman}, c) \land \textit{CharacterInMovie}(c, m) \land \textit{Directed}(\textit{Tarantino}, m)$
+\end{enumerate}
+
+\item
+\begin{enumerate}
+\item $\forall x, y ~ \textit{Divisible}(x, y) \Leftrightarrow \big[ \exists z ~ (z < x) \land (x = z \times y) \big]$
+\item $\forall x ~ \textit{Even}(x) \Leftrightarrow (x = 0) \lor \textit{Divisible}(x, 2)$
+\item $\forall x ~ \textit{Odd}(x) \Leftrightarrow \neg \textit{Divisible}(x, 2)$
+\item $\forall x ~ \textit{Odd}(x) \Leftrightarrow \exists y \big[ \textit{Even}(y) \land (x = y + 1) \big]$
+\item $\forall x ~ \textit{Prime}(x) \Leftrightarrow \textit{Divisible}(x, x) \land \neg \exists y \big[ (x \neq y) \land (y \neq 1) \land \textit{Divisible}(x, y) \big]$
+\end{enumerate}
+
+\item
+\begin{itemize}
+\item \textit{Person} is a unary predicate which is true if the referred object is a person.
+\item \textit{MotherOf} is a unary function mapping from a person object to the object representing the person's mother.
+\item \textit{FatherOf} is a unary function mapping from a person object to the object representing the person's father.
+\item \textit{D{\footnotesize NA}Of\thinspace} is a unary function mapping from a person object to the object representing the DNA of the person.
+\item \textit{D{\footnotesize NA}Combine\thinspace} is a binary function mapping from two DNA objects to the DNA object representing the combination of the two DNA objects.
+\end{itemize}
+
+``Everyone's DNA is unique and is derived from their parent's DNA.''
+
+$\big[\forall \; p_1, p_2 \; : \; \textit{Person}(p_1) \land \textit{Person}(p_2) \land (p_1 \neq p_2) \Rightarrow \textit{D{\footnotesize NA}Of\thinspace}(p_1) \neq \textit{D{\footnotesize NA}Of\thinspace}(p_2) \big] \land \\
+\Bigg[ \forall \; p \; : \textit{Person}(p) \Rightarrow \bigg(\textit{D{\footnotesize NA}Of\thinspace}(p) = \textit{D{\footnotesize NA}Combine\thinspace}\Big(\textit{D{\footnotesize NA}Of\thinspace}\big(\textit{MotherOf\thinspace}(p)\big), \textit{D{\footnotesize NA}Of\thinspace}\big(\textit{FatherOf\thinspace}(p)\big)\Big)\bigg) \Bigg]$
+
+\end{enumerate}
+
+\section{Resolution in First-Order Logic}
+
+\begin{enumerate}
+\item
+\begin{enumerate}
+\item $\textsc{Unify}\big(\textit{Philosopher}(x), \textit{Philosopher}(\textit{Plato})\big) = \{ x / \textit{Plato} \,\}$
+\item $\textsc{Unify}\big(\textit{Write}(\textit{Plato}, \textit{TheRepublic}), \textit{Write}(\textit{Plato}, y)\big) = \{ y / \textit{TheRepublic} \,\}$
+\item $\textsc{Unify}\big(\textit{Read}(x, \textit{Metaphysics}), \textit{Read}(\textit{Peter}, y)\big) = \{ x / \textit{Peter}, y / \textit{Metaphysics} \,\}$
+\item The atomic sentences are standardized apart to allow unification.\\Without renaming the variables the sentences cannot be unified.
+
+$\textsc{Unify}\big(\textit{Write}(x_1, \textit{Fear}), \textit{Write}(\textit{Kierkegaard}, x_2)\big) =
+\{ x_1 / \textit{Kierkegaard}, x_2 / \textit{Fear} \,\}$
+
+\item Following the \textsc{Unify}-algorithm as described in \textit{\ac{AIMA}}:
+\begin{enumerate}
+\item \textsc{Unify}$\Big(\textit{Write}\big(\textit{Kant}, \textit{Critique}\big), \textit{Write}\big(\textit{Author}(y), y\big), []\Big)$
+
+$\big[ \theta \neq \textit{failure} \big] \land \big[x \neq y\big] \land \big[\textsc{Variable?}(x) = \textit{False}\big] \land \big[\textsc{Variable?}(y) = \textit{False}\big] \land\\
+\big[ \textsc{Compound?}(x) = \textit{True} \big] \land \big[ \textsc{Compound}(y) = \textit{True} \big]$
+
+\item \textsc{Unify}(\textit{Write}, \textit{Write}, [])
+
+$\big[\theta \neq \textit{failure}\big] \land \big[x = y\big]$
+
+Returns: $[]$
+
+\item \textsc{Unify}$\Big(\big[\textit{Kant}, \textit{Critique}\big], \big[\textit{Author}(y), y\big], []\Big)$
+
+$\big[\theta \neq \textit{failure}\big] \land \big[x \neq y\big] \land \big[\textsc{Variable?}(x) = \textit{False}\big] \land \big[\textsc{Variable?}(y) = \textit{False}\big] \land\\
+\big[ \textsc{Compound?}(x) = \textit{False} \land \textsc{Compound?}(y) = \textit{False} \big] \land\\
+\big[ \textsc{List?}(x) = \textit{True} \land \textsc{List?}(y) = \textit{True} \big]$
+
+\item \textsc{Unify}$\big(\textit{Kant}, \textit{Author}(y), []\big)$
+
+$\big[\theta \neq \textit{failure}\big] \land \big[x \neq y\big] \land \big[\textit{Variable?}(x) = \textit{False}\big] \land \big[\textsc{Variable?}(y) = \textit{False}\big] \land\\
+\big[ \textsc{Compound?}(x) = \textit{False} \land \textsc{Compound?}(y) = \textit{True} \big] \land\\
+\big[ \textsc{List?}(x) = \textit{False} \land \textsc{List?}(y) = \textit{False} \big]$
+
+Returns: \textit{failure}
+\end{enumerate}
+
+The \textsc{Unify} algorithm fails to find a \textit{unifier} for the pair of atomic sentences.\\However, the unifier $\{y / \textit{Critique}\,\}$ makes the following statement true:
+
+$\big[ \textsc{Subst}(\{y / \textit{Critique} \,\}, \textit{Write}(\textit{Kant}, \textit{Critique})) =
+\textsc{Subst}(\{y / \textit{Critique} \,\}, \textit{Write}(\textit{Author}(y), y)) \big]$
+
+$\Leftrightarrow$
+
+$\big[ \textit{Write}(\textit{Kant}, \textit{Critique}) =
+\textit{Write}(\textit{Author}(\textit{Critique}), \textit{Critique}) \big]$
+\end{enumerate}
+
+\item
+\begin{enumerate}
+\item
+$\exists x \, \exists y ~ \textit{Philosopher}(x) \land \textit{StudentOf}(y, x) \equiv \textit{Philosopher}(X) \land \textit{StudentOf}(Y, X)$
+
+\item
+$\forall y, x ~ \textit{Philosopher}(x) \land \textit{StudentOf}(y, x) \Rightarrow \big[ \exists z ~ \textit{Book}(z) \land \textit{Write}(x, z) \land \textit{Read}(y, z) \big] \equiv$
+
+$\forall y, x ~ \textit{Philosopher}(x) \land \textit{StudentOf}(y, x) \Rightarrow \big[ \textit{Book}(Z(y, x)) \land \textit{Write}(x, Z(y, x)) \land \textit{Read}(y, Z(y, x)) \big]$
+\end{enumerate}
+
+\item
+Initial conversion to \ac{CNF}:
+\begin{itemize}
+\item
+$\forall x ~ \textit{SuperActor}(x) \Leftrightarrow \big[ \exists m ~ \textit{PlayedInMovie}(x, m) \land \textit{Directed}(x, m) \big] \equiv$
+
+$\forall x ~ \Big[ \textit{SuperActor}(x) \Rightarrow \big[ \exists m ~ \textit{PlayedInMovie}(x, m) \land \textit{Directed}(x, m) \big] \Big] \land$\\
+$\Big[ \big[ \exists m ~ \textit{PlayedInMovie}(x, m) \land \textit{Directed}(x, m) \big] \Rightarrow \textit{SuperActor}(x) \Big] \equiv $
+
+$\forall x ~ \Big[ \neg \textit{SuperActor}(x) \lor \big[ \exists m ~ \textit{PlayedInMovie}(x, m) \land \textit{Directed}(x, m) \big] \Big] \land$\\
+$\Big[ \big[ \neg \exists m ~ \textit{PlayedInMovie}(x, m) \land \textit{Directed}(x, m) \big] \lor \textit{SuperActor}(x) \Big] \equiv $
+
+$\forall x ~ \Big[ \neg \textit{SuperActor}(x) \lor \big[ \exists m ~ \textit{PlayedInMovie}(x, m) \land \textit{Directed}(x, m) \big] \Big] \land$\\
+$\Bigg[ \Big[ \forall m ~ \neg \big[ \textit{PlayedInMovie}(x, m) \land \textit{Directed}(x, m) \big] \Big] \lor \textit{SuperActor}(x) \Bigg] \equiv $
+
+$\forall x, m ~ \Big[ \neg \textit{SuperActor}(x) \lor \big[ \textit{PlayedInMovie}(x, M(x)) \land \textit{Directed}(x, M(x)) \big] \Big] \land$\\
+$\Bigg[ \Big[ \neg \big[ \textit{PlayedInMovie}(x, m)) \land \textit{Directed}(x, m) \big] \Big] \lor \textit{SuperActor}(x) \Bigg] \equiv $
+
+$\forall x, m ~ \Big[ \big[ \neg \textit{SuperActor}(x) \lor \textit{PlayedInMovie}(x, M(x)) \big] \land \big[ \neg \textit{SuperActor}(x) \lor \textit{Directed}(x, M(x)) \big] \Big] \land$\\
+$\big[ \neg \textit{PlayedInMovie}(x, m) \lor \neg \textit{Directed}(x, m) \lor \textit{SuperActor}(x) \big]$
+
+\underline{$\big[ \neg \textit{SuperActor}(x) \lor \textit{PlayedInMovie}(x, M(x)) \big] \land \big[ \neg \textit{SuperActor}(x) \lor \textit{Directed}(x, M(x)) \big] \land$}\\
+\underline{$\big[ \neg \textit{PlayedInMovie}(x, m) \lor \neg \textit{Directed}(x, m) \lor \textit{SuperActor}(x) \big]$}
+
+\clearpage
+
+\item
+$\forall a ~ \textit{Directed}(\textit{Tarantino}, a) \Leftrightarrow \textit{PlayedInMovie}(\textit{UmaThurman}, a) \equiv$
+
+$\forall a ~ \big[ \textit{Directed}(\textit{Tarantino}, a) \Rightarrow \textit{PlayedInMovie}(\textit{UmaThurman}, a) \big] \land$\\
+$\big[ \textit{PlayedInMovie}(\textit{UmaThurman}, a) \Rightarrow \textit{Directed}(\textit{Tarantino}, a) \big] \equiv$
+
+$\forall a ~ \big[ \neg \textit{Directed}(\textit{Tarantino}, a) \lor \textit{PlayedInMovie}(\textit{UmaThurman}, a) \big] \land$\\
+$\big[ \neg \textit{PlayedInMovie}(\textit{UmaThurman}, a) \lor \textit{Directed}(\textit{Tarantino}, a) \big] \equiv$
+
+$\underline{\big[ \neg \textit{Directed}(\textit{Tarantino}, a) \lor \textit{PlayedInMovie}(\textit{UmaThurman}, a) \big] \land}$\\
+$\underline{\big[ \neg \textit{PlayedInMovie}(\textit{UmaThurman}, a) \lor \textit{Directed}(\textit{Tarantino}, a) \big]}$
+
+NB: $a / A$ is used as an identifier instead of $m$ for standardization.
+
+\item
+$\exists b ~ \textit{PlayedInMovie}(\textit{UmaThurman}, b) \land \textit{PlayedInMovie}(\textit{Tarantino}, b) \equiv$
+
+$\underline{\big[ \textit{PlayedInMovie}(\textit{UmaThurman}, B) \big] \land \big[ \textit{PlayedInMovie}(\textit{Tarantino}, B) \big]}$
+
+NB: $b / B$ is used as an identifier instead of $m$ for standardization.
+\end{itemize}
+
+\begin{enumerate}
+\item
+We prove that Tarantino is a super actor by showing a contradiction if we assume that the opposite is true.
+\begin{enumerate}
+\item
+{\footnotesize
+\begin{displaymath}
+\frac{\neg \textit{PlayedInMovie}(x, m) \lor \neg \textit{Directed}(x, m) \lor \textit{SuperActor}(x), \quad \neg \textit{SuperActor}(\textit{Tarantino})}{\textsc{Subst}\big(\{x / \textit{Tarantino}\}, \neg \textit{PlayedInMovie}(x, m) \lor \neg \textit{Directed}(x, m)\big)}
+\end{displaymath}
+}
+Resolvent clause: $\neg \textit{PlayedInMovie}(\textit{Tarantino}, m) \lor \neg \textit{Directed}(\textit{Tarantino}, m)$.
+
+\item
+{\footnotesize
+\begin{displaymath}
+\frac{\neg \textit{PlayedInMovie}(\textit{UmaThurman}, a) \lor \textit{Directed}(\textit{Tarantino}, a), \quad \textit{PlayedInMovie}(\textit{UmaThurman}, B)}{\textsc{Subst}\big(\{ a / B\}, \textit{Directed}(\textit{Tarantino}, a)  \big)}
+\end{displaymath}
+}
+Resolvent clause: $\textit{Directed}(\textit{Tarantino}, B)$.
+
+\item
+{\footnotesize
+\begin{displaymath}
+\frac{\neg \textit{PlayedInMovie}(\textit{Tarantino}, m) \lor \neg \textit{Directed}(\textit{Tarantino}, m), \quad \textit{Directed}(\textit{Tarantino}, B)}{\textsc{Subst}\big(\{m / B\}, \neg \textit{PlayedInMovie}(\textit{Tarantino}, m) \big)}
+\end{displaymath}
+}
+Resolvent clause: $\neg \textit{PlayedInMovie}(\textit{Tarantino}, B)$.
+
+\item
+{\footnotesize
+\begin{displaymath}
+\frac{\neg \textit{PlayedInMovie}(\textit{Tarantino}, B), \quad \textit{PlayedInMovie}(\textit{Tarantino}, B)}{\textsc{Subst}\big(\{\}, \textit{False}\big)}
+\end{displaymath}
+}
+Resolvent clause: \textit{False}.
+\end{enumerate}
+
+\item
+\begin{itemize}
+\item Someone is a super actor if and only if there exists a movie which they have both played in and directed.
+\item Tarantino directs a movie if and only if Uma Thurman plays in the movie.
+\item There exists a movie which both Uma Thurman and Tarantino plays in.
+\end{itemize}
+
+We know that the requirement for being a super actor is that one must have both been an actor and a director for the same movie. Since we know that Tarantino directs all movies which Uma Thurman plays in, and we know that Uma Thurman and Tarantino have both played in the same movie, it follows that Tarantino both directed and played in this movie. Since Tarantino has been both an actor and director in the same movie at least once, we know that he must be a super actor.
+\end{enumerate}
+\end{enumerate}
+
+\end{document}
