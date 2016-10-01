@@ -1,0 +1,95 @@
+\cardfrontfoot{First-Order Logic}
+
+\begin{flashcard}[Question]{How does the \textbf{ontological-} and \textbf{epistemological commitments} of \textbf{propositional logic}, \textbf{first-order logic}, \textbf{temporal logic}, \textbf{probability theory}, and \textbf{fuzzy logic} differ?}
+\footnotesize
+\begin{center}
+The \textbf{ontological commitment} of \textbf{propositional logic} involves \textbf{facts},\\and its \textbf{epistemological commitment} is that statements\\can be believed to be \textbf{true}, \textbf{false}, or \textbf{unknown}.
+
+\medskip
+
+The \textbf{ontological commitment} of \textbf{first-order logic} involves \textbf{facts},\\\textbf{objects}, and \textbf{relations}. Its \textbf{epistemological commitment} is that statements\\can be believed to be \textbf{true}, \textbf{false}, or \textbf{unknown}.
+
+\medskip
+
+The \textbf{ontological commitment} of \textbf{temporal logic} involves \textbf{facts},\\\textbf{objects}, \textbf{relations}, and \textbf{times}. Its \textbf{epistemological commitment} is that statements\\can be believed to be \textbf{true}, \textbf{false}, or \textbf{unknown}.
+
+\medskip
+
+The \textbf{ontological commitment} of \textbf{probability theory} involves \textbf{facts}. Its \textbf{epistemological commitment} is that facts\\can be believed in a degree ranging from 0 (not true) to 1 (true).
+
+\medskip
+
+The \textbf{ontological commitment} of \textbf{fuzzy logic} involves \textbf{facts} with a degree of truth $\in [0,1]$. Its \textbf{epistemological commitment} is that facts can be believed in a degree ranging from 0 (not true) to 1 (true).
+\end{center}
+\end{flashcard}
+
+\begin{flashcard}[Question]{Which types of symbols are there in \textbf{first-order logic}?}
+\begin{center}
+\textbf{Constant symbols}, which stand for \textbf{objects}.
+
+\medskip
+
+\textbf{Predicate symbols}, which stand for \textbf{relations} between \textbf{objects}.
+
+\medskip
+
+\textbf{Function symbols}, which stand for \textbf{functions}.
+\end{center}
+\end{flashcard}
+
+\begin{flashcard}[Question]{What is a \textbf{term}, \textbf{ground term}, and an \textbf{atomic sentence}?}
+\begin{center}
+A \textbf{term} is a logical expression that refers to an \textbf{object}, either directly as a \textbf{constant} or through a \textbf{function} or \textbf{variable}.
+
+\medskip
+
+A \textbf{ground term} is a \textbf{term} without \textbf{variables}.
+
+\medskip
+
+An \textbf{atomic sentence} is formed from a \textbf{predicate symbol} optionally followed by a parenthesized list of \textbf{terms}.
+\end{center}
+\end{flashcard}
+
+\begin{flashcard}[Question]{What are the connections between $\forall$ and $\exists$?}
+\begin{center}
+{\begin{align*}
+\forall x ~ \neg P &\equiv \neg \exists x ~ P\\
+\neg \forall x ~ P &\equiv \exists x ~ \neg P\\
+\forall x ~ P &\equiv \neg \exists x ~ \neg P\\
+\exists x ~ P &\equiv \neg \forall x ~ \neg P
+\end{align*}}
+\end{center}
+\end{flashcard}
+
+\begin{flashcard}[Question]{What are \textbf{database semantics}?}
+\begin{center}
+\textbf{Database semantics} involves the following three mechanisms:
+
+\medskip
+
+The \textbf{unique-names assumption} which states that\\every constant symbol refers to a distinct object.
+
+\medskip
+
+The \textbf{closed-world assumption} which states that\\all sentences not known to be true are false.
+
+\medskip
+
+\textbf{Domain closure}; meaning that each model contains no more domain elements than those named by the constant symbols.
+\end{center}
+\end{flashcard}
+
+\begin{flashcard}[Question]{What is the function of the \textbf{\textsc{Tell}}, \textbf{\textsc{Ask}},\\and \textbf{\textsc{AskVars}} functions?}
+\begin{center}
+The $\textbf{\textsc{Tell}}(\textit{KB}, \alpha)$ function can be used to \textbf{assert} that\\the sentence $\alpha$ is true within the knowledge base.
+
+\medskip
+
+The $\textbf{\textsc{Ask}}(\textit{KB}, \alpha)$ function can be used to \textbf{query} whether\\the sentence $\alpha$ is true within the knowledge base.
+
+\medskip
+
+The $\textbf{\textsc{AskVars}}(\textit{KB}, \textit{Person}(x))$ function can be used to make\\\textbf{quantified queries} where the result will be a list of\\\textbf{substitution lists} or \textbf{binding lists} of the form $\{x/\textit{Richard}\}$.
+\end{center}
+\end{flashcard}
